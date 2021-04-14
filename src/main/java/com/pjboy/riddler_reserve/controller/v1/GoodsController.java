@@ -60,14 +60,16 @@ public class GoodsController {
   }
 
   @GetMapping("/goods/listAll")
-  public AjaxResponse selectAllByList(@RequestParam(required = false) String name,
+  public AjaxResponse selectAllByList(@RequestParam() Integer pageSize,
+                                      @RequestParam() Integer currentPage,
+                                      @RequestParam(required = false) String name,
                                       @RequestParam(required = false)
                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeStart,
                                       @RequestParam(required = false)
                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeEnd) {
     //BasicCheck.checkRole("admin");
     String ErrorEmpty = "未查询到商品!";
-    Page<GoodsDO> page = new Page<>();
+    Page<GoodsDO> page = new Page<>(currentPage, pageSize);
     IPage<GoodsDO> goodsDOIPage = goodsService.selectGoodsPage(page, name, createTimeStart, createTimeEnd);
     if (goodsDOIPage != null) return AjaxResponse.success(goodsDOIPage);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);

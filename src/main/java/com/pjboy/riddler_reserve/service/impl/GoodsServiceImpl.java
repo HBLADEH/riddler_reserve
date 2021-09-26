@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -26,6 +27,11 @@ public class GoodsServiceImpl implements GoodsService {
   @Override
   public int deleteGoodsById(Integer goodsId) {
     return goodsMapper.deleteById(goodsId);
+  }
+
+  @Override
+  public int deleteGoodsByIds(List<Integer> ids) {
+    return goodsMapper.deleteBatchIds(ids);
   }
 
   @Override

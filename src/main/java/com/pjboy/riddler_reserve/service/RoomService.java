@@ -2,6 +2,8 @@ package com.pjboy.riddler_reserve.service;
 
 import com.pjboy.riddler_reserve.model.RoomDO;
 
+import java.util.List;
+
 public interface RoomService {
   int addRoom(RoomDO roomDO);
 
@@ -12,4 +14,6 @@ public interface RoomService {
   RoomDO selectRoomById(Integer roomId);
 
   RoomDO selectRoomByName(String name);
+
+  List<RoomDO> ListRooms();
 }

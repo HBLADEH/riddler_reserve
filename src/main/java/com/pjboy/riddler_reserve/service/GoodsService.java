@@ -11,6 +11,7 @@ public interface GoodsService {
   int addGoods(GoodsDO goodsDO);
 
   int deleteGoodsById(Integer goodsId);
+  int deleteGoodsByIds(List<Integer> ids);
 
   int updateGoods(GoodsDO goodsDO);
 

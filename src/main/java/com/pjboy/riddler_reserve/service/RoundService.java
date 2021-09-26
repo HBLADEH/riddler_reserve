@@ -1,6 +1,9 @@
 package com.pjboy.riddler_reserve.service;
 
+import com.pjboy.riddler_reserve.model.RoomDO;
 import com.pjboy.riddler_reserve.model.RoundDO;
+
+import java.util.List;
 
 public interface RoundService {
   int addRound(RoundDO roundDO);
@@ -11,4 +14,6 @@ public interface RoundService {
 
   RoundDO selectRoundById(Integer roundId);
   RoundDO selectRoundByName(String name);
+  List<RoundDO> ListRounds();
+
 }

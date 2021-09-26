@@ -10,4 +10,19 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
+  <select id="getVOByName" resultType="com.pjboy.riddler_reserve.model.vo.AdminVO">
+    SELECT
+    id,
+    username,
+    nickname,
+    avatar,
+    email,
+    create_time,
+    update_time
+    FROM
+    rm_admin
+    <where>
+      username = #{username}
+    </where>
+  </select>
 </mapper>

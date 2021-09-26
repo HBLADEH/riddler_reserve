@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pjboy.riddler_reserve.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.pjboy.riddler_reserve.model.OrderDO">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+    <result column="order_goods" jdbcType="INTEGER" property="orderGoods"/>
+    <result column="order_round" jdbcType="INTEGER" property="orderRound"/>
+    <result column="order_room" jdbcType="INTEGER" property="orderRoom"/>
+    <result column="order_time" jdbcType="TIMESTAMP" property="orderTime"/>
+    <result column="order_price" jdbcType="DECIMAL" property="orderPrice"/>
+    <result column="order_state" jdbcType="INTEGER" property="orderState"/>
+    <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+  </resultMap>
+  <select id="listOrdersByDate" resultType="com.pjboy.riddler_reserve.model.vo.OrderVO">
+    SELECT rm_order.id,
+    order_id,
+    rm_goods.name as 'goods',
+    rm_round.name as 'round',
+    rm_room.name as 'room',
+    order_time,
+    order_state,
+    user_id
+    FROM rm_order,
+    rm_round,
+    rm_room,
+    rm_goods
+    <where>
+      <if test="startTime!=null">
+        and date_format(order_time,'%Y-%m-%d') &gt;= date_format(#{startTime},'%Y-%m-%d')
+      </if>
+      <if test="endTime!=null">
+        and date_format(order_time,'%Y-%m-%d') &lt;= date_format(#{endTime},'%Y-%m-%d')
+      </if>
+
+      AND rm_order.order_round = rm_round.id
+      AND rm_order.order_room = rm_room.id
+      AND rm_order.order_goods = rm_goods.id
+    </where>
+  </select>
+</mapper>

@@ -5,6 +5,7 @@ import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.AdminDO;
 import com.pjboy.riddler_reserve.model.UserDO;
+import com.pjboy.riddler_reserve.model.vo.AdminVO;
 import com.pjboy.riddler_reserve.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,11 @@ public class AdminController {
   private AdminService adminService;
 
   @PostMapping("/admin/login")
-  public AjaxResponse adminLogin(@RequestParam String username, @RequestParam String password) {
-    AdminDO adminDO = adminService.checkLogin(username, password);
-    if (adminDO != null) {
-      adminDO.setPassword(null);
-      StpUtil.setLoginId("admin" + adminDO.getId());
-      return AjaxResponse.success(adminDO, "登陆成功!");
+  public AjaxResponse adminLogin(@RequestBody AdminDO adminDO) {
+    AdminVO adminVO = adminService.checkLogin(adminDO.getUsername(), adminDO.getPassword());
+    if (adminVO != null) {
+      StpUtil.setLoginId("admin" + adminVO.getId());
+      return AjaxResponse.success(adminVO, "登陆成功!");
     }
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, "登陆失败,请检查用户名或者密码!");
   }

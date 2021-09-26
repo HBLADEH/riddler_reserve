@@ -1,13 +1,11 @@
 package com.pjboy.riddler_reserve.controller.v1;
 
+import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.model.UserDO;
 import com.pjboy.riddler_reserve.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Description: 用户控制器
@@ -20,6 +18,16 @@ public class UserController {
 
   @Autowired
   private UserService userService;
+
+
+  @PostMapping("/login")
+  public AjaxResponse login(@RequestParam String username, @RequestParam String password) {
+    //UserDO userDO = userService.checkLogin(username,password);
+    //if (userDO != null) {
+    //
+    //}
+    return null;
+  }
 
   //@GetMapping("/users/{id}")
   //public UserDO getUserById(@PathVariable Long id) {

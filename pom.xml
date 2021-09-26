@@ -41,6 +41,14 @@
       <scope>provided</scope>
     </dependency>
 
+    <!--  dozer  -->
+    <dependency>
+      <groupId>net.sf.dozer</groupId>
+      <artifactId>dozer</artifactId>
+      <version>5.5.1</version>
+    </dependency>
+
+
     <!--  mysql  -->
     <dependency>
       <groupId>mysql</groupId>

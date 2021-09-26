@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.pjboy.riddler_reserve.mapper.AdminMapper;
 import com.pjboy.riddler_reserve.model.AdminDO;
 import com.pjboy.riddler_reserve.model.UserDO;
+import com.pjboy.riddler_reserve.model.vo.AdminVO;
 import com.pjboy.riddler_reserve.service.AdminService;
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class AdminServiceImpl implements AdminService {
   private AdminMapper adminMapper;
 
   @Autowired
-  BCryptPasswordEncoder encoder;
+  private BCryptPasswordEncoder encoder;
 
   /**
    * @Description: 登陆检查, 如果登陆成功则返回登陆用户的ID
@@ -30,11 +32,15 @@ public class AdminServiceImpl implements AdminService {
    * @Date: 2021/4/6
    */
   @Override
-  public AdminDO checkLogin(String username, String password) {
+  public AdminVO checkLogin(String username, String password) {
     QueryWrapper<AdminDO> wrapper = new QueryWrapper<>();
     wrapper.eq("username", username);
     AdminDO adminDO = adminMapper.selectOne(wrapper);
-    return adminDO != null && encoder.matches(password, adminDO.getPassword()) ? adminDO : null;
+    if (adminDO != null && encoder.matches(password, adminDO.getPassword())) {
+      DozerBeanMapper mapper = new DozerBeanMapper();
+      return mapper.map(adminDO, AdminVO.class);
+    }
+    return null;
   }
 
   @Override

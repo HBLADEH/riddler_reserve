@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -51,6 +52,14 @@ public class GoodsController {
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorDelete);
   }
 
+  @DeleteMapping("/goods")
+  public AjaxResponse deleteGoodsByIds(@RequestBody  List<Integer> ids) {
+    BasicCheck.checkRole("admin");
+    String ErrorDelete = "删除商品失败!";
+    if (goodsService.deleteGoodsByIds(ids) > 0) return AjaxResponse.success();
+    return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorDelete);
+  }
+
   @PutMapping("/goods")
   public AjaxResponse updateGoodsById(@RequestBody GoodsDO goodsDO) {
     BasicCheck.checkRole("admin");
@@ -67,13 +76,12 @@ public class GoodsController {
                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeStart,
                                       @RequestParam(required = false)
                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeEnd) {
-    //BasicCheck.checkRole("admin");
+    BasicCheck.checkRole("admin");
     String ErrorEmpty = "未查询到商品!";
     Page<GoodsDO> page = new Page<>(currentPage, pageSize);
     IPage<GoodsDO> goodsDOIPage = goodsService.selectGoodsPage(page, name, createTimeStart, createTimeEnd);
     if (goodsDOIPage != null) return AjaxResponse.success(goodsDOIPage);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
   }
-
 }
 

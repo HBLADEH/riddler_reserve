@@ -8,6 +8,8 @@ import com.pjboy.riddler_reserve.service.RoundService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoundServiceImpl implements RoundService {
 
@@ -39,5 +41,10 @@ public class RoundServiceImpl implements RoundService {
     QueryWrapper<RoundDO> wrapper = new QueryWrapper<>();
     wrapper.eq("name", name);
     return roundMapper.selectOne(wrapper);
+  }
+
+  @Override
+  public List<RoundDO> ListRounds() {
+    return roundMapper.selectList(null);
   }
 }

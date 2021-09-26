@@ -7,6 +7,8 @@ import com.pjboy.riddler_reserve.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RoomServiceImpl implements RoomService {
 
@@ -39,5 +41,10 @@ public class RoomServiceImpl implements RoomService {
     QueryWrapper<RoomDO> wrapper = new QueryWrapper<>();
     wrapper.eq("name", name);
     return roomMapper.selectOne(wrapper);
+  }
+
+  @Override
+  public List<RoomDO> ListRooms() {
+    return roomMapper.selectList(null);
   }
 }

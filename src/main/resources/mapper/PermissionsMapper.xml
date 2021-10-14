@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pjboy.riddler_reserve.mapper.PermissionsMapper">
+  <select id="getPermissionsByAdminId" resultType="com.pjboy.riddler_reserve.model.vo.PermissionsVO">
+    SELECT p.label, p.value
+    FROM rm_admin_permissions ap,
+    rm_permissions p
+    <where>
+      ap.permissions_id = p.id
+      <if test="adminId != null">
+        AND ap.admin_id = #{adminId}
+      </if>
+    </where>
+  </select>
+</mapper>

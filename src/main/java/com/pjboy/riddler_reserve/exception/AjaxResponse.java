@@ -10,10 +10,10 @@ import lombok.Data;
  **/
 @Data
 public class AjaxResponse {
-  private boolean result; // 是否请求成功
+  private boolean success; // 是否请求成功
   private int code; // 请求响应代码
   private String message; // 请求结果描述信息
-  private Object data; // 请求结果数据
+  private Object result; // 请求结果数据
 
   public AjaxResponse() {
   }
@@ -27,7 +27,7 @@ public class AjaxResponse {
   */
   public static AjaxResponse error(CustomException e) {
     AjaxResponse resultBean = new AjaxResponse();
-    resultBean.setResult(false);
+    resultBean.setSuccess(false);
     resultBean.setCode(e.getCode());
     resultBean.setMessage(e.getMessage());
     return  resultBean;
@@ -43,7 +43,7 @@ public class AjaxResponse {
    */
   public static AjaxResponse error(CustomExceptionType customExceptionType, String errorMessage) {
     AjaxResponse resultBean = new AjaxResponse();
-    resultBean.setResult(false);
+    resultBean.setSuccess(false);
     resultBean.setCode(customExceptionType.getCode());
     resultBean.setMessage(errorMessage);
     return resultBean;
@@ -58,7 +58,7 @@ public class AjaxResponse {
   */
   public static AjaxResponse success() {
     AjaxResponse ajaxResponse = new AjaxResponse();
-    ajaxResponse.setResult(true);
+    ajaxResponse.setSuccess(true);
     ajaxResponse.setCode(200);
     ajaxResponse.setMessage("请求响应成功!");
     return ajaxResponse;
@@ -73,10 +73,10 @@ public class AjaxResponse {
   */
   public static AjaxResponse success(Object obj) {
     AjaxResponse ajaxResponse = new AjaxResponse();
-    ajaxResponse.setResult(true);
+    ajaxResponse.setSuccess(true);
     ajaxResponse.setCode(200);
     ajaxResponse.setMessage("请求响应成功!");
-    ajaxResponse.setData(obj);
+    ajaxResponse.setResult(obj);
     return ajaxResponse;
   }
 
@@ -89,10 +89,10 @@ public class AjaxResponse {
    */
   public static AjaxResponse success(Object obj, String message) {
     AjaxResponse ajaxResponse = new AjaxResponse();
-    ajaxResponse.setResult(true);
+    ajaxResponse.setSuccess(true);
     ajaxResponse.setCode(200);
     ajaxResponse.setMessage(message);
-    ajaxResponse.setData(obj);
+    ajaxResponse.setResult(obj);
     return ajaxResponse;
   }
 

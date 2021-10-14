@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -20,5 +21,5 @@ public interface GoodsMapper extends BaseMapper<GoodsDO> {
    * @param createTimeEnd 创建时间终点
    * @return 分页对象
    */
-  IPage<GoodsDO> selectGoodsPage(Page<?> page, @Param("goodsName") String goodsName, @Param("createTimeStart") String createTimeStart,@Param("createTimeEnd") String createTimeEnd);
+  IPage<GoodsVO> selectGoodsPage(Page<?> page, @Param("goodsName") String goodsName, @Param("createTimeStart") String createTimeStart, @Param("createTimeEnd") String createTimeEnd);
 }

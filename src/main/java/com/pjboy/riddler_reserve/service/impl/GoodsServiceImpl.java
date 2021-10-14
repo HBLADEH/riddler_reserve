@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.mapper.GoodsMapper;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 import com.pjboy.riddler_reserve.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class GoodsServiceImpl implements GoodsService {
   }
 
   @Override
-  public IPage<GoodsDO> selectGoodsPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd) {
+  public IPage<GoodsVO> selectGoodsPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     String Start = null, End = null;
     if (createTimeStart != null) Start = sdf.format(createTimeStart);

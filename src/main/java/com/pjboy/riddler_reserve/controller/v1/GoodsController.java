@@ -7,6 +7,7 @@ import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 import com.pjboy.riddler_reserve.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -79,7 +80,7 @@ public class GoodsController {
     BasicCheck.checkRole("admin");
     String ErrorEmpty = "未查询到商品!";
     Page<GoodsDO> page = new Page<>(currentPage, pageSize);
-    IPage<GoodsDO> goodsDOIPage = goodsService.selectGoodsPage(page, name, createTimeStart, createTimeEnd);
+    IPage<GoodsVO> goodsDOIPage = goodsService.selectGoodsPage(page, name, createTimeStart, createTimeEnd);
     if (goodsDOIPage != null) return AjaxResponse.success(goodsDOIPage);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
   }

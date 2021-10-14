@@ -10,9 +10,9 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
 
-  <select id="selectGoodsPage" resultType="com.pjboy.riddler_reserve.model.GoodsDO">
+  <select id="selectGoodsPage" resultType="com.pjboy.riddler_reserve.model.vo.GoodsVO">
     SELECT
-    id, name, description, create_time, update_time
+    id, name, create_time, update_time
     FROM rm_goods
     <where>
       <if test="goodsName != null">

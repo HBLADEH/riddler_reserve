@@ -2,9 +2,13 @@ package com.pjboy.riddler_reserve.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.pjboy.riddler_reserve.mapper.AdminMapper;
+import com.pjboy.riddler_reserve.mapper.PermissionsMapper;
 import com.pjboy.riddler_reserve.model.AdminDO;
+import com.pjboy.riddler_reserve.model.PermissionsDO;
 import com.pjboy.riddler_reserve.model.UserDO;
+import com.pjboy.riddler_reserve.model.vo.AdminInfoVO;
 import com.pjboy.riddler_reserve.model.vo.AdminVO;
+import com.pjboy.riddler_reserve.model.vo.PermissionsVO;
 import com.pjboy.riddler_reserve.service.AdminService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,9 @@ public class AdminServiceImpl implements AdminService {
 
   @Autowired
   private AdminMapper adminMapper;
+
+  @Autowired
+  private PermissionsMapper permissionsMapper;
 
   @Autowired
   private BCryptPasswordEncoder encoder;
@@ -46,5 +53,19 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public AdminDO getById(Long id) {
     return adminMapper.selectById(id);
+  }
+
+  @Override
+  public AdminInfoVO getInfoById(Integer id) {
+    AdminDO adminDO = adminMapper.selectById(id);
+    if (adminDO != null) {
+      AdminInfoVO adminInfoVO = new AdminInfoVO(adminDO);
+      List<PermissionsVO> permissions = permissionsMapper.getPermissionsByAdminId(id);
+      if (permissions != null) {
+        adminInfoVO.setPermissions(permissions);
+        return adminInfoVO;
+      }
+    }
+    return null;
   }
 }

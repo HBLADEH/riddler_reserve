@@ -3,6 +3,7 @@ package com.pjboy.riddler_reserve.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 
 import java.util.Date;
 import java.util.List;
@@ -30,6 +31,6 @@ public interface GoodsService {
    * @param createTimeEnd 创建时间终点
    * @return 分页对象
    */
-  IPage<GoodsDO> selectGoodsPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd);
+  IPage<GoodsVO> selectGoodsPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd);
 
 }

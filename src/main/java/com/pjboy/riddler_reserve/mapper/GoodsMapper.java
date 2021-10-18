@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.GoodsDO;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 
+@Mapper
 public interface GoodsMapper extends BaseMapper<GoodsDO> {
   /**
    * <p>

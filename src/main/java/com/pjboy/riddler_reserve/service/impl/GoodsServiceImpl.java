@@ -5,14 +5,19 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.mapper.GoodsMapper;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.GoodsPackageDO;
+import com.pjboy.riddler_reserve.model.vo.GoodsFromVO;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
+import com.pjboy.riddler_reserve.service.GoodsPackageService;
 import com.pjboy.riddler_reserve.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -20,9 +25,29 @@ public class GoodsServiceImpl implements GoodsService {
   @Autowired
   private GoodsMapper goodsMapper;
 
+  @Autowired
+  private GoodsPackageService goodsPackageService;
+
+  /**
+   * @Description: 添加商品
+   * @Param: [goodsFromVO]
+   * @return: int
+   * @Author: BLADE
+   * @Date: 2021/10/15
+   */
   @Override
-  public int addGoods(GoodsDO goodsDO) {
-    return goodsMapper.insert(goodsDO);
+  public int addGoods(GoodsFromVO goodsFromVO) {
+    GoodsDO goodsDO = goodsFromVO.getGoods();
+    int goodsRes = goodsMapper.insert(goodsDO);
+    if (goodsRes > 0) {
+      List<GoodsPackageDO> packageList = goodsFromVO.getPackageList();
+      packageList.forEach(t -> {
+        t.setGoodsId(goodsDO.getId());
+      });
+      /* 添加套餐 */
+      goodsPackageService.saveBatch(goodsFromVO.getPackageList());
+    }
+    return goodsRes;
   }
 
   @Override
@@ -36,13 +61,32 @@ public class GoodsServiceImpl implements GoodsService {
   }
 
   @Override
-  public int updateGoods(GoodsDO goodsDO) {
-    return goodsMapper.updateById(goodsDO);
+  public int updateGoods(GoodsFromVO goodsFromVO) {
+    GoodsDO goodsDO = goodsFromVO.getGoods();
+    int goodsRes = goodsMapper.updateById(goodsDO);
+    if (goodsRes > 0) {
+      Map<String, Object> map = new HashMap<>();
+      map.put("goods_id", goodsDO.getId());
+      goodsPackageService.removeByMap(map);
+      List<GoodsPackageDO> packageList = goodsFromVO.getPackageList();
+      packageList.forEach(t -> {
+        t.setGoodsId(goodsDO.getId());
+      });
+      goodsPackageService.saveBatch(packageList);
+    }
+    return goodsRes;
   }
 
   @Override
-  public GoodsDO selectGoodsById(Integer goodsId) {
-    return goodsMapper.selectById(goodsId);
+  public GoodsFromVO selectGoodsById(Integer goodsId) {
+    GoodsDO goodsDO = goodsMapper.selectById(goodsId);
+    if (goodsDO != null) {
+      Map<String, Object> map = new HashMap<>();
+      map.put("goods_id", goodsDO.getId());
+      List<GoodsPackageDO> packageList = goodsPackageService.listByMap(map);
+      return new GoodsFromVO(goodsDO, packageList);
+    }
+    return null;
   }
 
   @Override

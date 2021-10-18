@@ -3,20 +3,21 @@ package com.pjboy.riddler_reserve.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.vo.GoodsFromVO;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 
 import java.util.Date;
 import java.util.List;
 
 public interface GoodsService {
-  int addGoods(GoodsDO goodsDO);
+  int addGoods(GoodsFromVO goodsFromVO);
 
   int deleteGoodsById(Integer goodsId);
   int deleteGoodsByIds(List<Integer> ids);
 
-  int updateGoods(GoodsDO goodsDO);
+  int updateGoods(GoodsFromVO goodsFromVO);
 
-  GoodsDO selectGoodsById(Integer goodsId);
+  GoodsFromVO selectGoodsById(Integer goodsId);
 
   GoodsDO selectGoodsByName(String name);
 

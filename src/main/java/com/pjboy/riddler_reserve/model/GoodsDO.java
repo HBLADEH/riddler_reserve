@@ -23,6 +23,9 @@ public class GoodsDO extends BaseModel implements Serializable {
   /**
    * 套餐, 使用 json 来存储 {name: ‘名称’, price: ‘价格’}
    */
-  private String packageList;
-
+  //private String packageList;
+  /**
+   * 游玩人数
+   */
+  private Integer playNum;
 }

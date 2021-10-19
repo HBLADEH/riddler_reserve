@@ -15,11 +15,11 @@ public interface OrderGroupMapper extends BaseMapper<OrderGroupDO> {
    * 分页查询组局列表
    *
    * @param page            分页对象,xml中可以从里面进行取值,传递参数 Page 即自动分页,必须放在第一位(你可以继承Page实现自己的分页对象)   * @param goodsName 商品名称
-   * @param createTimeStart 创建时间起点
-   * @param createTimeEnd   创建时间终点
+   * @param playTimeStart 创建时间起点
+   * @param playTimeEnd   创建时间终点
    * @return 组局分页列表
    */
-  IPage<OrderGroupVO> selectOrderGroupPage(Page<?> page, @Param("goodsName") String goodsName, @Param("createTimeStart") String createTimeStart, @Param("createTimeEnd") String createTimeEnd);
+  IPage<OrderGroupVO> selectOrderGroupPage(Page<?> page, @Param("goodsName") String goodsName, @Param("playTimeStart") String playTimeStart, @Param("playTimeEnd") String playTimeEnd);
 
   /**
   * @Description: 根据 Id 获取组局数据

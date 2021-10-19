@@ -5,27 +5,36 @@
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="goods_name" jdbcType="VARCHAR" property="GoodsName"/>
     <result column="play_num" jdbcType="INTEGER" property="playNum"/>
+    <result column="room_name" jdbcType="VARCHAR" property="roomName"/>
+    <result column="round_name" jdbcType="VARCHAR" property="roundName"/>
     <result column="package_name" jdbcType="VARCHAR" property="packageName"/>
     <result column="package_price" jdbcType="DECIMAL" property="packagePrice"/>
+    <result column="play_time" jdbcType="TIMESTAMP" property="playTime"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
   </resultMap>
   <select id="selectOrderGroupPage" resultMap="VOResultMap">
     SELECT
     og.id,
     g.name 'goods_name',g.play_num,
-    og.package_name,og.package_price,og.create_time
+    rm.name 'room_name',
+    rd.name 'round_name',
+    og.package_name,og.package_price,og.play_time,og.create_time
     FROM rm_order_group og,
-    rm_goods g
+    rm_goods g,rm_room rm,rm_round rd
     <where>
       og.goods_id = g.id
+      AND
+      og.room_id = rm.id
+      AND
+      og.round_id = rd.id
       <if test="goodsName != null">
-        g.name LIKE CONCAT('%',#{goodsName},'%')
+        AND g.name LIKE CONCAT('%',#{goodsName},'%')
       </if>
-      <if test="createTimeStart != null">
-        AND og.create_time >= CONCAT('','${createTimeStart}',' 00:00:00')
+      <if test="playTimeStart != null">
+        AND og.play_time >= CONCAT('','${playTimeStart}',' 00:00:00')
       </if>
-      <if test="createTimeEnd != null">
-        AND og.create_time &lt;= CONCAT('','${createTimeEnd}',' 23:59:59')
+      <if test="playTimeEnd != null">
+        AND og.play_time &lt;= CONCAT('','${playTimeEnd}',' 23:59:59')
       </if>
     </where>
 
@@ -34,13 +43,19 @@
     SELECT
     og.id,
     g.name 'goods_name',g.play_num,
-    og.package_name,og.package_price,og.create_time
+    rm.name 'room_name',
+    rd.name 'round_name',
+    og.package_name,og.package_price,og.play_time,og.create_time
     FROM rm_order_group og,
-    rm_goods g
+    rm_goods g,rm_room rm,rm_round rd
     <where>
       og.goods_id = g.id
+      AND
+      og.room_id = rm.id
+      AND
+      og.round_id = rd.id
       <if test="id != null">
-        og.id = #{id}
+        AND og.id = #{id}
       </if>
     </where>
   </select>

@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
-import com.pjboy.riddler_reserve.model.GoodsDO;
 import com.pjboy.riddler_reserve.model.OrderGroupDO;
 import com.pjboy.riddler_reserve.model.vo.OrderGroupVO;
 import com.pjboy.riddler_reserve.service.OrderGroupService;
@@ -27,13 +26,13 @@ public class OrderGroupController {
                                              @RequestParam(value = "page") Integer currentPage,
                                              @RequestParam(required = false) String goodsName,
                                              @RequestParam(required = false)
-                                             @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeStart,
+                                             @DateTimeFormat(pattern = "yyyy-MM-dd") Date playTimeStart,
                                              @RequestParam(required = false)
-                                             @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeEnd) {
+                                             @DateTimeFormat(pattern = "yyyy-MM-dd") Date playTimeEnd) {
     BasicCheck.checkRole("admin");
     String ErrorEmpty = "未查询到组局信息!";
     Page<OrderGroupDO> page = new Page<>(currentPage, pageSize);
-    IPage<OrderGroupVO> orderGroupIPage = orderGroupService.selectOrderGroupPage(page, goodsName, createTimeStart, createTimeEnd);
+    IPage<OrderGroupVO> orderGroupIPage = orderGroupService.selectOrderGroupPage(page, goodsName, playTimeStart, playTimeEnd);
     if (orderGroupIPage != null) return AjaxResponse.success(orderGroupIPage);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
   }

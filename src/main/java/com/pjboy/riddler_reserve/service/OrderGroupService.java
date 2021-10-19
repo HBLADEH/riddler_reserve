@@ -16,7 +16,7 @@ public interface OrderGroupService {
    * @Author: BLADE
    * @Date: 2021/10/18
    */
-  IPage<OrderGroupVO> selectOrderGroupPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd);
+  IPage<OrderGroupVO> selectOrderGroupPage(Page<?> page, String goodsName, Date playTimeStart, Date playTimeEnd);
 
   int addOrderGroup(OrderGroupDO orderGroupDO);
 

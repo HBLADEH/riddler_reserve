@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 14/04/2021 15:11:01
+ Date: 20/10/2021 01:02:27
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `rm_admin`;
 CREATE TABLE `rm_admin`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `username` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户名，唯一',
   `nickname` varchar(24) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用户昵称',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
@@ -30,8 +30,9 @@ CREATE TABLE `rm_admin`  (
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
   `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `username`(`username`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_admin
@@ -39,36 +40,74 @@ CREATE TABLE `rm_admin`  (
 INSERT INTO `rm_admin` VALUES (1, 'blade', '泡椒', '$2a$10$8Z7gxMGNpKAb6436mmOkie02x0f2r0HG1v7S3BGQGG7hA/IiODNT6', NULL, '1012582116@qq.com', '2021-04-05 23:49:47.953', '2021-04-06 01:11:00.591');
 
 -- ----------------------------
+-- Table structure for rm_admin_permissions
+-- ----------------------------
+DROP TABLE IF EXISTS `rm_admin_permissions`;
+CREATE TABLE `rm_admin_permissions`  (
+  `admin_id` int(11) NOT NULL COMMENT '管理员ID',
+  `permissions_id` int(11) NOT NULL COMMENT '权限ID',
+  INDEX `rm_admin_permissions_ibfk_1`(`permissions_id`) USING BTREE,
+  INDEX `admin_id`(`admin_id`) USING BTREE,
+  CONSTRAINT `rm_admin_permissions_ibfk_1` FOREIGN KEY (`permissions_id`) REFERENCES `rm_permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `rm_admin_permissions_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `rm_admin` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rm_admin_permissions
+-- ----------------------------
+INSERT INTO `rm_admin_permissions` VALUES (1, 1);
+INSERT INTO `rm_admin_permissions` VALUES (1, 2);
+INSERT INTO `rm_admin_permissions` VALUES (1, 3);
+INSERT INTO `rm_admin_permissions` VALUES (1, 4);
+INSERT INTO `rm_admin_permissions` VALUES (1, 5);
+INSERT INTO `rm_admin_permissions` VALUES (1, 6);
+INSERT INTO `rm_admin_permissions` VALUES (1, 7);
+INSERT INTO `rm_admin_permissions` VALUES (1, 8);
+
+-- ----------------------------
 -- Table structure for rm_goods
 -- ----------------------------
 DROP TABLE IF EXISTS `rm_goods`;
 CREATE TABLE `rm_goods`  (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `cover_img` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '商品图片',
+  `play_num` int(11) NOT NULL COMMENT '游玩人数',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商品名称',
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-  `package_list` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '套餐, 使用 json 来存储 {name: \'名称\', price: \'价格\'}',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '描述',
   `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_goods
 -- ----------------------------
-INSERT INTO `rm_goods` VALUES (1, '商品666', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-07 01:41:48.217', '2021-04-07 19:08:41.051');
-INSERT INTO `rm_goods` VALUES (3, '商品1', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-07 01:49:08.643', '2021-04-07 01:49:08.647');
-INSERT INTO `rm_goods` VALUES (4, '商品12', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-07 13:42:47.612', '2021-04-07 19:23:43.765');
-INSERT INTO `rm_goods` VALUES (5, '商品3', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-08 00:59:04.227', '2021-04-10 01:00:11.933');
-INSERT INTO `rm_goods` VALUES (6, '商品4', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:07.979', '2021-04-10 00:59:07.979');
-INSERT INTO `rm_goods` VALUES (7, '商品5', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:10.640', '2021-04-10 00:59:10.640');
-INSERT INTO `rm_goods` VALUES (8, '商品6', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:13.391', '2021-04-10 00:59:13.391');
-INSERT INTO `rm_goods` VALUES (9, '商品7', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:16.045', '2021-04-10 00:59:16.045');
-INSERT INTO `rm_goods` VALUES (10, '商品8', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:18.733', '2021-04-10 00:59:18.733');
-INSERT INTO `rm_goods` VALUES (11, '商品9', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:21.113', '2021-04-10 00:59:21.113');
-INSERT INTO `rm_goods` VALUES (12, '商品10', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:23.895', '2021-04-10 00:59:23.895');
-INSERT INTO `rm_goods` VALUES (13, '商品11', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:26.568', '2021-04-10 00:59:26.568');
-INSERT INTO `rm_goods` VALUES (14, '商品13', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:30.361', '2021-04-10 00:59:30.361');
-INSERT INTO `rm_goods` VALUES (15, '商品14', '简介', '{\"name\": \"套餐1\", \"price\": \"99\"}', '2021-04-10 00:59:32.863', '2021-04-10 00:59:32.863');
+INSERT INTO `rm_goods` VALUES (3, NULL, 6, '宿醉', '简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介1111111111111111111111111111111111111111111', '2021-04-07 01:49:08.000', '2021-10-15 12:55:17.000');
+INSERT INTO `rm_goods` VALUES (9, NULL, 6, '舍离2断念', '简介', '2021-04-10 00:59:16.045', '2021-10-15 12:55:17.709');
+INSERT INTO `rm_goods` VALUES (10, NULL, 5, '星火号', '简介', '2021-04-10 00:59:18.733', '2021-10-15 12:55:48.088');
+INSERT INTO `rm_goods` VALUES (11, NULL, 8, '爱幼妇产医院', '简介', '2021-04-10 00:59:21.113', '2021-10-15 12:55:17.727');
+INSERT INTO `rm_goods` VALUES (18, NULL, 7, '二十二条校规', '现在是深夜凌晨2：00，往日人声鼎沸的学校里此刻充满寂静，阴冷的月光照在一个个无人的教室中，给黑夜平添上了一分诡异感。教学楼一共有6层，此时5楼某个教室中，一个人影悄悄的打开了教室的门，然后小心翼翼的观察着周围的走廊，良久，这个人影似乎松了口气，轻轻的走出去并关上教室的门似是在极力避免发出声音，突然，“他”浑身一抖似乎感应到了什么一样，立刻朝着走廊的边狂奔，看到楼梯后“他”飞速向下跑，正想口气冲下一楼时“他”突然在楼梯口停了下来，接着头也不回的转身朝二楼跑去，似乎楼梯下面有什么非常恐怖的东西在等着“他”一样，终于“他”累了跑不动了，“他”在走廊尽头找到了一间教室便赶忙冲了进去想要躲躲，但是打开门的瞬间，“他”的脸色瞬间变得惨白，眼睛直勾勾的看着眼前难以置信的一幕，随后，死寂的校园中传出了一声凄厉的怡叫。', '2021-04-15 04:28:04.000', '2021-10-15 12:55:17.000');
+INSERT INTO `rm_goods` VALUES (33, NULL, 0, '112211', '', '2021-10-17 11:42:59.000', '2021-10-17 11:42:59.000');
+INSERT INTO `rm_goods` VALUES (34, NULL, 0, '11112111', '', '2021-10-17 11:43:27.000', '2021-10-17 11:43:27.000');
+INSERT INTO `rm_goods` VALUES (35, NULL, 0, '1212', '6666', '2021-10-17 11:44:34.000', '2021-10-17 11:44:34.000');
+
+-- ----------------------------
+-- Table structure for rm_goods_package
+-- ----------------------------
+DROP TABLE IF EXISTS `rm_goods_package`;
+CREATE TABLE `rm_goods_package`  (
+  `goods_id` int(11) NOT NULL COMMENT '商品ID',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '套餐名称',
+  `price` decimal(10, 2) NOT NULL COMMENT '价格',
+  INDEX `rm_goods_package_ibfk_1`(`goods_id`) USING BTREE,
+  CONSTRAINT `rm_goods_package_ibfk_1` FOREIGN KEY (`goods_id`) REFERENCES `rm_goods` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rm_goods_package
+-- ----------------------------
+INSERT INTO `rm_goods_package` VALUES (18, '基本套餐', 55.00);
+INSERT INTO `rm_goods_package` VALUES (34, '1', 1.00);
 
 -- ----------------------------
 -- Table structure for rm_order
@@ -77,20 +116,70 @@ DROP TABLE IF EXISTS `rm_order`;
 CREATE TABLE `rm_order`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `order_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '订单号',
-  `order_round` int(11) NULL DEFAULT NULL COMMENT '预约场次 ID',
-  `order_room` int(11) NULL DEFAULT NULL COMMENT '预约房间 ID',
-  `order_time` datetime NULL DEFAULT NULL COMMENT '预约时间 ( YYYY-MM-dd )',
-  `order_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '预约金额',
-  `order_state` int(2) NULL DEFAULT NULL COMMENT '订单状态(0=未付款,1=已付款,2=已退款,3=已取消)',
-  `user_id` int(11) NULL DEFAULT NULL COMMENT '对应的下单用户 ID',
+  `order_goods` int(11) NOT NULL COMMENT '预约剧本 ID',
+  `order_round` int(11) NOT NULL COMMENT '预约场次 ID',
+  `order_room` int(11) NOT NULL COMMENT '预约房间 ID',
+  `order_time` datetime NOT NULL COMMENT '预约时间 ( YYYY-MM-dd )',
+  `order_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '预约金额',
+  `order_state` int(2) NOT NULL COMMENT '订单状态(0=未付款,1=已付款,2=已退款,3=已取消)',
+  `user_id` int(11) NOT NULL COMMENT '对应的下单用户 ID',
   `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_order
 -- ----------------------------
+INSERT INTO `rm_order` VALUES (1, '123123123124124124', 3, 1, 1, '2021-04-29 00:00:00', 11.00, 0, 1, '2021-04-29 23:41:26.474', '2021-05-20 15:49:03.562');
+INSERT INTO `rm_order` VALUES (2, '123123123124124124', 9, 1, 1, '2021-05-30 00:00:01', 11.00, 0, 1, '2021-04-29 23:41:26.474', '2021-05-20 15:51:18.840');
+INSERT INTO `rm_order` VALUES (3, '123123123124124124', 10, 1, 1, '2021-05-10 00:00:00', 11.00, 0, 1, '2021-04-29 23:41:26.474', '2021-05-20 15:49:11.286');
+INSERT INTO `rm_order` VALUES (4, '123123123124124124', 11, 1, 1, '2021-05-30 00:00:00', 11.00, 0, 1, '2021-04-29 23:41:26.474', '2021-05-20 15:49:17.567');
+
+-- ----------------------------
+-- Table structure for rm_order_group
+-- ----------------------------
+DROP TABLE IF EXISTS `rm_order_group`;
+CREATE TABLE `rm_order_group`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `goods_id` int(11) NOT NULL COMMENT '商品ID',
+  `room_id` int(11) NOT NULL COMMENT '房间ID',
+  `round_id` int(11) NOT NULL COMMENT '场次ID',
+  `package_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '套餐名称',
+  `package_price` decimal(10, 2) NOT NULL COMMENT '套餐价格',
+  `play_time` date NOT NULL COMMENT '预约时间',
+  `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rm_order_group
+-- ----------------------------
+INSERT INTO `rm_order_group` VALUES (1, 18, 1, 1, '套餐123', 55.67, '2021-10-11', '2021-10-18 23:21:58.589');
+INSERT INTO `rm_order_group` VALUES (2, 3, 1, 2, '套餐1', 55.00, '2021-10-19', '2021-10-19 00:59:36.574');
+
+-- ----------------------------
+-- Table structure for rm_permissions
+-- ----------------------------
+DROP TABLE IF EXISTS `rm_permissions`;
+CREATE TABLE `rm_permissions`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限名称',
+  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限值',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rm_permissions
+-- ----------------------------
+INSERT INTO `rm_permissions` VALUES (1, '主控台', 'dashboard_console');
+INSERT INTO `rm_permissions` VALUES (2, '商品页面', 'goods_list');
+INSERT INTO `rm_permissions` VALUES (3, '商品页面添加', 'goods_add');
+INSERT INTO `rm_permissions` VALUES (4, '商品页面修改', 'goods_edit');
+INSERT INTO `rm_permissions` VALUES (5, '商品页面删除', 'goods_delete');
+INSERT INTO `rm_permissions` VALUES (6, '组局页面添加', 'order_group_add');
+INSERT INTO `rm_permissions` VALUES (7, '组局页面修改', 'order_group_edit');
+INSERT INTO `rm_permissions` VALUES (8, '组局页面删除', 'order_group_delete');
 
 -- ----------------------------
 -- Table structure for rm_role
@@ -100,7 +189,7 @@ CREATE TABLE `rm_role`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `rolename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_role
@@ -116,13 +205,13 @@ CREATE TABLE `rm_room`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '房间名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_room
 -- ----------------------------
-INSERT INTO `rm_room` VALUES (1, '房间1232');
-INSERT INTO `rm_room` VALUES (4, '房间1');
+INSERT INTO `rm_room` VALUES (1, '二楼房间');
+INSERT INTO `rm_room` VALUES (2, '三楼房间');
 
 -- ----------------------------
 -- Table structure for rm_round
@@ -132,13 +221,13 @@ CREATE TABLE `rm_round`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '场次名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_round
 -- ----------------------------
-INSERT INTO `rm_round` VALUES (1, '场次1232');
-INSERT INTO `rm_round` VALUES (3, '场次1');
+INSERT INTO `rm_round` VALUES (1, '下午场');
+INSERT INTO `rm_round` VALUES (2, '晚上场');
 
 -- ----------------------------
 -- Table structure for rm_user
@@ -154,7 +243,7 @@ CREATE TABLE `rm_user`  (
   `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_user

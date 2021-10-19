@@ -18,11 +18,11 @@ public class OrderGroupServiceImpl implements OrderGroupService {
   @Autowired
   private OrderGroupMapper orderGroupMapper;
   @Override
-  public IPage<OrderGroupVO> selectOrderGroupPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd) {
+  public IPage<OrderGroupVO> selectOrderGroupPage(Page<?> page, String goodsName, Date playTimeStart, Date playTimeEnd) {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     String Start = null, End = null;
-    if (createTimeStart != null) Start = sdf.format(createTimeStart);
-    if (createTimeEnd != null) End = sdf.format(createTimeEnd);
+    if (playTimeStart != null) Start = sdf.format(playTimeStart);
+    if (playTimeEnd != null) End = sdf.format(playTimeEnd);
     return orderGroupMapper.selectOrderGroupPage(page,goodsName,Start,End);
   }
 

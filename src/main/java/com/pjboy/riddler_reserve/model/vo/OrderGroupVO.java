@@ -15,6 +15,8 @@ public class OrderGroupVO {
   private String roundName;
   private String packageName;
   private BigDecimal packagePrice;
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date playTime;
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date createTime;
 }

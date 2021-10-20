@@ -1,5 +1,7 @@
 package com.pjboy.riddler_reserve.controller.v1;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
@@ -18,6 +20,19 @@ public class RoomController {
 
   @Autowired
   private RoomService roomService;
+
+  @GetMapping("/rooms/listAll")
+  public AjaxResponse selectRoomsByList(@RequestParam(value = "size") Integer pageSize,
+                                        @RequestParam(value = "page") Integer currentPage,
+                                        @RequestParam(required = false) String name
+  ) {
+    BasicCheck.checkRole("admin");
+    String ErrorEmpty = "未查询到房间!";
+    Page<RoomDO> page = new Page<>(currentPage,pageSize);
+    IPage<RoomDO> roomDOIPage = roomService.selectRoomsPage(page,name);
+    if (roomDOIPage != null) return AjaxResponse.success(roomDOIPage);
+    return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
+  }
 
   @GetMapping("/rooms/{roomId}")
   public AjaxResponse selectRoomById(@PathVariable Integer roomId) {

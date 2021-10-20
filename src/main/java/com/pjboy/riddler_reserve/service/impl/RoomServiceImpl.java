@@ -1,6 +1,8 @@
 package com.pjboy.riddler_reserve.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.mapper.RoomMapper;
 import com.pjboy.riddler_reserve.model.RoomDO;
 import com.pjboy.riddler_reserve.service.RoomService;
@@ -46,5 +48,10 @@ public class RoomServiceImpl implements RoomService {
   @Override
   public List<RoomDO> ListRooms() {
     return roomMapper.selectList(null);
+  }
+
+  @Override
+  public IPage<RoomDO> selectRoomsPage(Page<?> page, String name) {
+    return roomMapper.selectRoomsPage(page,name);
   }
 }

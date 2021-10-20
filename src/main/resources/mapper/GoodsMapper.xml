@@ -26,4 +26,8 @@
       </if>
     </where>
   </select>
+  <select id="getAllDWGoods" resultType="com.pjboy.riddler_reserve.model.util.DropDown">
+    SELECT id 'value',name 'label'
+    FROM rm_goods
+  </select>
 </mapper>

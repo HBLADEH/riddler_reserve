@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.util.DropDown;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 @Mapper
 public interface GoodsMapper extends BaseMapper<GoodsDO> {
@@ -24,4 +26,13 @@ public interface GoodsMapper extends BaseMapper<GoodsDO> {
    * @return 分页对象
    */
   IPage<GoodsVO> selectGoodsPage(Page<?> page, @Param("goodsName") String goodsName, @Param("createTimeStart") String createTimeStart, @Param("createTimeEnd") String createTimeEnd);
+
+  /**
+  * @Description: 获取下拉框
+  * @Param: []
+  * @return: java.util.List<com.pjboy.riddler_reserve.model.util.DropDown>
+  * @Author: BLADE
+  * @Date: 2021/10/20
+  */
+  List<DropDown> getAllDWGoods();
 }

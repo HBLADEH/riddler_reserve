@@ -5,4 +5,16 @@
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="name" jdbcType="VARCHAR" property="name"/>
   </resultMap>
+
+  <select id="selectRoomsPage" resultType="com.pjboy.riddler_reserve.model.RoomDO">
+    SELECT * FROM
+    rm_room
+    <where>
+      <if test="name != null">
+        name LIKE CONCAT('%',#{name},'%')
+      </if>
+    </where>
+  </select>
+
+
 </mapper>

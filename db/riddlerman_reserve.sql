@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 20/10/2021 01:02:27
+ Date: 21/10/2021 00:52:30
 */
 
 SET NAMES utf8mb4;
@@ -63,6 +63,9 @@ INSERT INTO `rm_admin_permissions` VALUES (1, 5);
 INSERT INTO `rm_admin_permissions` VALUES (1, 6);
 INSERT INTO `rm_admin_permissions` VALUES (1, 7);
 INSERT INTO `rm_admin_permissions` VALUES (1, 8);
+INSERT INTO `rm_admin_permissions` VALUES (1, 9);
+INSERT INTO `rm_admin_permissions` VALUES (1, 10);
+INSERT INTO `rm_admin_permissions` VALUES (1, 11);
 
 -- ----------------------------
 -- Table structure for rm_goods
@@ -167,19 +170,22 @@ CREATE TABLE `rm_permissions`  (
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限名称',
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_permissions
 -- ----------------------------
 INSERT INTO `rm_permissions` VALUES (1, '主控台', 'dashboard_console');
-INSERT INTO `rm_permissions` VALUES (2, '商品页面', 'goods_list');
-INSERT INTO `rm_permissions` VALUES (3, '商品页面添加', 'goods_add');
-INSERT INTO `rm_permissions` VALUES (4, '商品页面修改', 'goods_edit');
-INSERT INTO `rm_permissions` VALUES (5, '商品页面删除', 'goods_delete');
-INSERT INTO `rm_permissions` VALUES (6, '组局页面添加', 'order_group_add');
-INSERT INTO `rm_permissions` VALUES (7, '组局页面修改', 'order_group_edit');
-INSERT INTO `rm_permissions` VALUES (8, '组局页面删除', 'order_group_delete');
+INSERT INTO `rm_permissions` VALUES (2, '商品列表', 'goods_list');
+INSERT INTO `rm_permissions` VALUES (3, '商品列表添加', 'goods_add');
+INSERT INTO `rm_permissions` VALUES (4, '商品列表修改', 'goods_edit');
+INSERT INTO `rm_permissions` VALUES (5, '商列表删除', 'goods_delete');
+INSERT INTO `rm_permissions` VALUES (6, '组局列表添加', 'order_group_add');
+INSERT INTO `rm_permissions` VALUES (7, '组列表修改', 'order_group_edit');
+INSERT INTO `rm_permissions` VALUES (8, '组列表删除', 'order_group_delete');
+INSERT INTO `rm_permissions` VALUES (9, '房间列表添加', 'room_add');
+INSERT INTO `rm_permissions` VALUES (10, '房间列表修改', 'room_edit');
+INSERT INTO `rm_permissions` VALUES (11, '房间列表删除', 'room_delete');
 
 -- ----------------------------
 -- Table structure for rm_role
@@ -212,6 +218,7 @@ CREATE TABLE `rm_room`  (
 -- ----------------------------
 INSERT INTO `rm_room` VALUES (1, '二楼房间');
 INSERT INTO `rm_room` VALUES (2, '三楼房间');
+INSERT INTO `rm_room` VALUES (5, '房间3');
 
 -- ----------------------------
 -- Table structure for rm_round

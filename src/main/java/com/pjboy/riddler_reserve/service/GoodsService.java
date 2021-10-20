@@ -3,6 +3,7 @@ package com.pjboy.riddler_reserve.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.util.DropDown;
 import com.pjboy.riddler_reserve.model.vo.GoodsFromVO;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 
@@ -33,5 +34,7 @@ public interface GoodsService {
    * @return 分页对象
    */
   IPage<GoodsVO> selectGoodsPage(Page<?> page, String goodsName, Date createTimeStart, Date createTimeEnd);
+
+  List<DropDown> getAllDWGoods();
 
 }

@@ -59,7 +59,6 @@ public class OrderGroupController {
     String ErrorDelete = "删除组局信息失败!";
     if (orderGroupService.deleteOrderGroupByIds(ids) >0) return AjaxResponse.success();
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorDelete);
-
   }
 
   @GetMapping("/orderGroups/{id}")

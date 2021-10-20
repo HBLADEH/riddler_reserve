@@ -6,6 +6,7 @@ import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.GoodsDO;
+import com.pjboy.riddler_reserve.model.util.DropDown;
 import com.pjboy.riddler_reserve.model.vo.GoodsFromVO;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 import com.pjboy.riddler_reserve.service.GoodsService;
@@ -81,6 +82,15 @@ public class GoodsController {
     Page<GoodsDO> page = new Page<>(currentPage, pageSize);
     IPage<GoodsVO> goodsDOIPage = goodsService.selectGoodsPage(page, name, createTimeStart, createTimeEnd);
     if (goodsDOIPage != null) return AjaxResponse.success(goodsDOIPage);
+    return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
+  }
+
+  @GetMapping("/goods/allDW")
+  public AjaxResponse getAllDWGoods() {
+    BasicCheck.checkRole("admin");
+    String ErrorEmpty = "未查询到商品!";
+    List<DropDown> goods = goodsService.getAllDWGoods();
+    if (goods!=null) return AjaxResponse.success(goods);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
   }
 }

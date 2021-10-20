@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.mapper.GoodsMapper;
 import com.pjboy.riddler_reserve.model.GoodsDO;
 import com.pjboy.riddler_reserve.model.GoodsPackageDO;
+import com.pjboy.riddler_reserve.model.util.DropDown;
 import com.pjboy.riddler_reserve.model.vo.GoodsFromVO;
 import com.pjboy.riddler_reserve.model.vo.GoodsVO;
 import com.pjboy.riddler_reserve.service.GoodsPackageService;
@@ -103,5 +104,10 @@ public class GoodsServiceImpl implements GoodsService {
     if (createTimeStart != null) Start = sdf.format(createTimeStart);
     if (createTimeEnd != null) End = sdf.format(createTimeEnd);
     return goodsMapper.selectGoodsPage(page, goodsName, Start, End);
+  }
+
+  @Override
+  public List<DropDown> getAllDWGoods() {
+    return goodsMapper.getAllDWGoods();
   }
 }

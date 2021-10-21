@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 21/10/2021 00:52:30
+ Date: 22/10/2021 01:02:12
 */
 
 SET NAMES utf8mb4;
@@ -66,6 +66,9 @@ INSERT INTO `rm_admin_permissions` VALUES (1, 8);
 INSERT INTO `rm_admin_permissions` VALUES (1, 9);
 INSERT INTO `rm_admin_permissions` VALUES (1, 10);
 INSERT INTO `rm_admin_permissions` VALUES (1, 11);
+INSERT INTO `rm_admin_permissions` VALUES (1, 12);
+INSERT INTO `rm_admin_permissions` VALUES (1, 13);
+INSERT INTO `rm_admin_permissions` VALUES (1, 14);
 
 -- ----------------------------
 -- Table structure for rm_goods
@@ -80,7 +83,7 @@ CREATE TABLE `rm_goods`  (
   `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_goods
@@ -170,7 +173,7 @@ CREATE TABLE `rm_permissions`  (
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限名称',
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_permissions
@@ -186,6 +189,9 @@ INSERT INTO `rm_permissions` VALUES (8, '组列表删除', 'order_group_delete')
 INSERT INTO `rm_permissions` VALUES (9, '房间列表添加', 'room_add');
 INSERT INTO `rm_permissions` VALUES (10, '房间列表修改', 'room_edit');
 INSERT INTO `rm_permissions` VALUES (11, '房间列表删除', 'room_delete');
+INSERT INTO `rm_permissions` VALUES (12, '场次列表添加', 'round_add');
+INSERT INTO `rm_permissions` VALUES (13, '场次列表修改', 'round_edit');
+INSERT INTO `rm_permissions` VALUES (14, '场次列表删除', 'round_delete');
 
 -- ----------------------------
 -- Table structure for rm_role
@@ -211,14 +217,15 @@ CREATE TABLE `rm_room`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '房间名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_room
 -- ----------------------------
 INSERT INTO `rm_room` VALUES (1, '二楼房间');
 INSERT INTO `rm_room` VALUES (2, '三楼房间');
-INSERT INTO `rm_room` VALUES (5, '房间3');
+INSERT INTO `rm_room` VALUES (8, '四楼房间');
+INSERT INTO `rm_room` VALUES (9, '3楼房间');
 
 -- ----------------------------
 -- Table structure for rm_round
@@ -235,6 +242,7 @@ CREATE TABLE `rm_round`  (
 -- ----------------------------
 INSERT INTO `rm_round` VALUES (1, '下午场');
 INSERT INTO `rm_round` VALUES (2, '晚上场');
+INSERT INTO `rm_round` VALUES (4, '深夜场');
 
 -- ----------------------------
 -- Table structure for rm_user

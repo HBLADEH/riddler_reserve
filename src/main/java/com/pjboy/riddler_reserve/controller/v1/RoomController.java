@@ -7,12 +7,14 @@ import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.GoodsDO;
 import com.pjboy.riddler_reserve.model.RoomDO;
+import com.pjboy.riddler_reserve.model.util.DropDown;
 import com.pjboy.riddler_reserve.service.GoodsService;
 import com.pjboy.riddler_reserve.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -28,8 +30,8 @@ public class RoomController {
   ) {
     BasicCheck.checkRole("admin");
     String ErrorEmpty = "未查询到房间!";
-    Page<RoomDO> page = new Page<>(currentPage,pageSize);
-    IPage<RoomDO> roomDOIPage = roomService.selectRoomsPage(page,name);
+    Page<RoomDO> page = new Page<>(currentPage, pageSize);
+    IPage<RoomDO> roomDOIPage = roomService.selectRoomsPage(page, name);
     if (roomDOIPage != null) return AjaxResponse.success(roomDOIPage);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
   }
@@ -53,20 +55,32 @@ public class RoomController {
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorAdd);
   }
 
-  @DeleteMapping("/rooms/{roomId}")
-  public AjaxResponse deleteRoom(@PathVariable Integer roomId) {
+  @DeleteMapping("/rooms")
+  public AjaxResponse deleteRoomByIds(@RequestBody List<Integer> ids) {
     String ErrorDelete = "删除房间失败!";
     BasicCheck.checkRole("admin");
-    if (roomService.deleteRoomById(roomId) > 0) return AjaxResponse.success();
+    if (roomService.deleteRoomByIds(ids) > 0) return AjaxResponse.success();
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorDelete);
   }
 
   @PutMapping("/rooms")
   public AjaxResponse updateRoomById(@RequestBody RoomDO roomDO) {
+    String ErrorExist = "房间已存在!";
     String ErrorUpdate = "修改房间失败!";
     BasicCheck.checkRole("admin");
+    if (roomService.checkRoomName(roomDO.getName()))
+      return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorExist);
     if (roomService.updateRoom(roomDO) > 0) return AjaxResponse.success();
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorUpdate);
+  }
+
+  @GetMapping("/rooms/allDW")
+  public AjaxResponse getAllDWRooms() {
+    BasicCheck.checkRole("admin");
+    String ErrorEmpty = "未查询到房间!";
+    List<DropDown> dropDowns = roomService.getAllDWRooms();
+    if (dropDowns != null) return AjaxResponse.success(dropDowns);
+    return AjaxResponse.error(CustomExceptionType.SYSTEM_ERROR, ErrorEmpty);
   }
 }
 

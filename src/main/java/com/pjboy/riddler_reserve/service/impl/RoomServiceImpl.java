@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.mapper.RoomMapper;
 import com.pjboy.riddler_reserve.model.RoomDO;
+import com.pjboy.riddler_reserve.model.util.DropDown;
 import com.pjboy.riddler_reserve.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,18 @@ public class RoomServiceImpl implements RoomService {
   @Override
   public int deleteRoomById(Integer roomId) {
     return roomMapper.deleteById(roomId);
+  }
+
+  @Override
+  public boolean checkRoomName(String roomName) {
+    QueryWrapper<RoomDO> wrapper = new QueryWrapper<>();
+    wrapper.eq("name", roomName);
+    return roomMapper.selectList(wrapper).size() > 0;
+  }
+
+  @Override
+  public int deleteRoomByIds(List<Integer> ids) {
+    return roomMapper.deleteBatchIds(ids);
   }
 
   @Override
@@ -52,6 +65,11 @@ public class RoomServiceImpl implements RoomService {
 
   @Override
   public IPage<RoomDO> selectRoomsPage(Page<?> page, String name) {
-    return roomMapper.selectRoomsPage(page,name);
+    return roomMapper.selectRoomsPage(page, name);
+  }
+
+  @Override
+  public List<DropDown> getAllDWRooms() {
+    return roomMapper.getAllDWRooms();
   }
 }

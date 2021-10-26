@@ -7,6 +7,8 @@ import com.pjboy.riddler_reserve.model.GoodsPackageDO;
 import com.pjboy.riddler_reserve.model.OrderGroupDO;
 
 import java.util.Date;
+import java.util.List;
 
 public interface GoodsPackageService extends IService<GoodsPackageDO> {
-  }
+  List<GoodsPackageDO> getPackageByGoodsId(Integer goodsId);
+}

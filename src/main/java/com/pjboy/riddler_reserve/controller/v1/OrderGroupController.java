@@ -41,6 +41,10 @@ public class OrderGroupController {
   public AjaxResponse addOrderGroup(@RequestBody OrderGroupDO orderGroupDO) {
     BasicCheck.checkRole("admin");
     String ErrorInsert = "添加组局信息失败!";
+    String ErrorGoodsIsExist = "该商品在设定的游玩时间和场次上并不空闲！";
+    String ErrorRoomsIsExist = "该房间在设定的游玩时间和场次上并不空闲！";
+    if (orderGroupService.checkGoodsIsFree(orderGroupDO)) return  AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorGoodsIsExist);
+    if (orderGroupService.checkRoomsIsFree(orderGroupDO)) return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorRoomsIsExist);
     if (orderGroupService.addOrderGroup(orderGroupDO) > 0) return AjaxResponse.success();
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorInsert);
   }
@@ -49,6 +53,10 @@ public class OrderGroupController {
   public AjaxResponse updateOrderGroup(@RequestBody OrderGroupDO orderGroupDO) {
     BasicCheck.checkRole("admin");
     String ErrorEdit = "修改组局信息失败!";
+    String ErrorGoodsIsExist = "该商品在设定的游玩时间和场次上并不空闲！";
+    String ErrorRoomsIsExist = "该房间在设定的游玩时间和场次上并不空闲！";
+    if (orderGroupService.checkGoodsIsFree(orderGroupDO)) return  AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorGoodsIsExist);
+    if (orderGroupService.checkRoomsIsFree(orderGroupDO)) return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorRoomsIsExist);
     if (orderGroupService.updateOrderGroup(orderGroupDO) >0) return AjaxResponse.success();
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEdit);
   }
@@ -65,10 +73,9 @@ public class OrderGroupController {
   public AjaxResponse findOrderGroupById(@PathVariable Integer id){
     BasicCheck.checkRole("admin");
     String ErrorSelect = "未查询到组局信息!";
-    OrderGroupVO orderGroupVO = orderGroupService.findOrderGroupById(id);
-    if (orderGroupVO != null) return AjaxResponse.success(orderGroupVO);
+    OrderGroupDO orderGroupDO = orderGroupService.findOrderGroupById(id);
+    if (orderGroupDO != null) return AjaxResponse.success(orderGroupDO);
     return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorSelect);
-
   }
 
 }

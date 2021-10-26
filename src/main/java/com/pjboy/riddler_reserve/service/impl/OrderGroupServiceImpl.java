@@ -1,5 +1,6 @@
 package com.pjboy.riddler_reserve.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.mapper.OrderGroupMapper;
@@ -42,7 +43,31 @@ public class OrderGroupServiceImpl implements OrderGroupService {
   }
 
   @Override
-  public OrderGroupVO findOrderGroupById(Integer id) {
-    return orderGroupMapper.findOrderGroupById(id);
+  public OrderGroupDO findOrderGroupById(Integer id) {
+    return orderGroupMapper.selectById(id);
+  }
+
+  @Override
+  public boolean checkRoomsIsFree(OrderGroupDO orderGroupDO) {
+    QueryWrapper<OrderGroupDO> wrapper = new QueryWrapper<>();
+    if (orderGroupDO.getId() != null) {
+      wrapper.ne("id",orderGroupDO.getId());
+    }
+    wrapper.eq("play_time",orderGroupDO.getPlayTime())
+            .eq("room_id",orderGroupDO.getRoomId())
+            .eq("round_id",orderGroupDO.getRoundId());
+    return orderGroupMapper.selectList(wrapper).size() > 0;
+  }
+
+  @Override
+  public boolean checkGoodsIsFree(OrderGroupDO orderGroupDO) {
+    QueryWrapper<OrderGroupDO> wrapper = new QueryWrapper<>();
+    if (orderGroupDO.getId() != null) {
+      wrapper.ne("id",orderGroupDO.getId());
+    }
+    wrapper.eq("play_time",orderGroupDO.getPlayTime())
+            .eq("goods_id",orderGroupDO.getGoodsId())
+            .eq("round_id",orderGroupDO.getRoundId());
+    return orderGroupMapper.selectList(wrapper).size() > 0;
   }
 }

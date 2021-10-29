@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 22/10/2021 01:02:12
+ Date: 30/10/2021 00:48:58
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `rm_admin`  (
   `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_admin
@@ -156,13 +156,17 @@ CREATE TABLE `rm_order_group`  (
   `play_time` date NOT NULL COMMENT '预约时间',
   `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_order_group
 -- ----------------------------
-INSERT INTO `rm_order_group` VALUES (1, 18, 1, 1, '套餐123', 55.67, '2021-10-11', '2021-10-18 23:21:58.589');
+INSERT INTO `rm_order_group` VALUES (1, 18, 1, 1, '套餐123', 55.67, '2021-10-11', '2021-10-18 23:21:58.000');
 INSERT INTO `rm_order_group` VALUES (2, 3, 1, 2, '套餐1', 55.00, '2021-10-19', '2021-10-19 00:59:36.574');
+INSERT INTO `rm_order_group` VALUES (5, 18, 2, 2, '基本套餐', 55.00, '2021-10-25', '2021-10-25 18:49:48.045');
+INSERT INTO `rm_order_group` VALUES (9, 18, 3, 3, '套餐123', 55.67, '2021-10-11', '2021-10-27 00:20:58.996');
+INSERT INTO `rm_order_group` VALUES (8, 18, 3, 4, '套餐123', 55.67, '2021-10-11', '2021-10-27 00:13:59.211');
+INSERT INTO `rm_order_group` VALUES (10, 9, 2, 4, '套餐123', 55.67, '2021-10-11', '2021-10-27 00:21:20.320');
 
 -- ----------------------------
 -- Table structure for rm_permissions
@@ -173,7 +177,7 @@ CREATE TABLE `rm_permissions`  (
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限名称',
   `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限值',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_permissions
@@ -192,6 +196,22 @@ INSERT INTO `rm_permissions` VALUES (11, '房间列表删除', 'room_delete');
 INSERT INTO `rm_permissions` VALUES (12, '场次列表添加', 'round_add');
 INSERT INTO `rm_permissions` VALUES (13, '场次列表修改', 'round_edit');
 INSERT INTO `rm_permissions` VALUES (14, '场次列表删除', 'round_delete');
+
+-- ----------------------------
+-- Table structure for rm_resource
+-- ----------------------------
+DROP TABLE IF EXISTS `rm_resource`;
+CREATE TABLE `rm_resource`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '地址',
+  `target_type` int(11) NOT NULL COMMENT '类型',
+  `target_id` int(11) NULL DEFAULT NULL COMMENT '类型对应ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of rm_resource
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for rm_role
@@ -217,7 +237,7 @@ CREATE TABLE `rm_room`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '房间名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_room
@@ -235,7 +255,7 @@ CREATE TABLE `rm_round`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '场次名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of rm_round

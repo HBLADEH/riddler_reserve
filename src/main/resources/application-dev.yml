@@ -7,3 +7,14 @@ spring:
 logging:
   level:
     com.pjboy.riddler_reserve.mapper: debug
+    org.springframework.boot.autoconfigure: error
+debug: true
+
+# 文件上传
+file:
+  basicURL: http://image.riddlerreserve.com:8887/static
+  uploadFolder: F:\rd\static\
+  img:
+    imgList: .jpg,.png
+    goodsCoverImgSource: ${file.uploadFolder}/goods/coverImage/
+    goodsCoverImgURL: ${file.basicURL}/goods/coverImage/

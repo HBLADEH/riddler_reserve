@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pjboy.riddler_reserve.mapper.ResourceMapper">
+    <update id="safeDeleteResourceByTarget">
+        UPDATE rm_resource rr
+        set rr.target_id = null
+        <where>
+            <if test="targetType!=null">
+                rr.target_type = #{targetType}
+            </if>
+            <if test="targetId!=null">
+               AND rr.target_id = #{targetId}
+            </if>
+        </where>
+    </update>
+</mapper>

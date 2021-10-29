@@ -37,7 +37,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.20</version>
+      <version>1.18.22</version>
       <scope>provided</scope>
     </dependency>
 
@@ -60,14 +60,14 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>3.4.2</version>
+      <version>3.4.3.4</version>
     </dependency>
 
     <!-- sa-token 权限认证, 在线文档：http://sa-token.dev33.cn/ -->
     <dependency>
       <groupId>cn.dev33</groupId>
       <artifactId>sa-token-spring-boot-starter</artifactId>
-      <version>1.15.0.RELEASE</version>
+      <version>1.27.0</version>
     </dependency>
 
     <!--  Spring Security  -->

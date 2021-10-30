@@ -2,7 +2,6 @@ package com.pjboy.riddler_reserve.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -20,10 +19,6 @@ public class GoodsDO extends BaseModel implements Serializable {
    */
   private String description;
 
-  /**
-   * 套餐, 使用 json 来存储 {name: ‘名称’, price: ‘价格’}
-   */
-  //private String packageList;
   /**
    * 游玩人数
    */

@@ -9,8 +9,23 @@
                 rr.target_type = #{targetType}
             </if>
             <if test="targetId!=null">
-               AND rr.target_id = #{targetId}
+                AND rr.target_id = #{targetId}
             </if>
         </where>
     </update>
+    <update id="saveResourceByUrl">
+        UPDATE rm_resource rr
+        <if test="targetId != null">
+            set rr.target_id = #{targetId}
+        </if>
+        <where>
+            <if test="url != null">
+                rr.url = #{url}
+            </if>
+            <if test="targetType!=null">
+                AND rr.target_type = #{targetType}
+            </if>
+        </where>
+    </update>
+
 </mapper>

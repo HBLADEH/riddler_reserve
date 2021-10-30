@@ -25,13 +25,13 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public boolean safeDeleteResourceByTarget(ResourceTargetEnum targetType, Integer targetId) {
+    public boolean safeDeleteResourceByTarget(Integer targetType, Integer targetId) {
         return resourceMapper.safeDeleteResourceByTarget(targetType, targetId) > 0;
     }
 
     @Override
-    public boolean saveResourceByUrl(String url) {
-        return false;
+    public boolean saveResourceByUrl(String url, Integer targetType, Integer targetId) {
+        return resourceMapper.saveResourceByUrl(url, targetType, targetId) > 0;
     }
 
     @Override

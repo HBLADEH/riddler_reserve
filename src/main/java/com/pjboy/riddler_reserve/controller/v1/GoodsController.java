@@ -61,14 +61,7 @@ public class GoodsController {
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         //goodsDO.setCreateTime(new Date());
         if (goodsService.addGoods(goodsFromVO) > 0) {
-
-            String coverImg = goodsFromVO.getGoods().getCoverImg();
-
-            coverImg = coverImg.substring(coverImg.lastIndexOf("/") + 1);
-            Integer targetId = goodsFromVO.getGoods().getId();
-            if (!resourceService.saveResourceByUrl(coverImg, ResourceTargetEnum.GOODS.getValue(), targetId))
-                return AjaxResponse.error(CustomExceptionType.REQUEST_REFUSE, "保存资源表失败");
-            return AjaxResponse.success();
+            return saveResources(goodsFromVO);
         }
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorAdd);
     }
@@ -78,8 +71,7 @@ public class GoodsController {
         BasicCheck.checkRole("admin");
         String ErrorDelete = "删除商品失败!";
         if (goodsService.deleteGoodsById(goodsId) > 0) {
-            if (!resourceService.safeDeleteResourceByTarget(ResourceTargetEnum.GOODS.getValue(), goodsId))
-                return AjaxResponse.error(CustomExceptionType.REQUEST_REFUSE, "移除资源失败");
+            resourceService.safeDeleteResourceByTarget(ResourceTargetEnum.GOODS.getValue(), goodsId);
             return AjaxResponse.success();
         }
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorDelete);
@@ -89,7 +81,10 @@ public class GoodsController {
     public AjaxResponse deleteGoodsByIds(@RequestBody List<Integer> ids) {
         BasicCheck.checkRole("admin");
         String ErrorDelete = "删除商品失败!";
-        if (goodsService.deleteGoodsByIds(ids) > 0) return AjaxResponse.success();
+        if (goodsService.deleteGoodsByIds(ids) > 0) {
+            resourceService.safeDeleteResourceByTargets(ResourceTargetEnum.GOODS.getValue(), ids);
+            return AjaxResponse.success();
+        }
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorDelete);
     }
 
@@ -98,10 +93,22 @@ public class GoodsController {
         BasicCheck.checkRole("admin");
         String ErrorUpdate = "修改商品失败!";
         if (goodsService.updateGoods(goodsFromVO) > 0) {
-            return AjaxResponse.success();
+            resourceService.safeDeleteResourceByTarget(ResourceTargetEnum.GOODS.getValue(), goodsFromVO.getGoods().getId());
+            return saveResources(goodsFromVO);
         }
 
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorUpdate);
+    }
+
+    private AjaxResponse saveResources(@RequestBody GoodsFromVO goodsFromVO) {
+        if (goodsFromVO.getGoods().getCoverImg() != null) {
+            String coverImg = goodsFromVO.getGoods().getCoverImg();
+            coverImg = coverImg.substring(coverImg.lastIndexOf("/") + 1);
+            Integer targetId = goodsFromVO.getGoods().getId();
+            if (!resourceService.saveResourceByUrl(coverImg, ResourceTargetEnum.GOODS.getValue(), targetId))
+                return AjaxResponse.error(CustomExceptionType.REQUEST_REFUSE, "保存资源表失败");
+        }
+        return AjaxResponse.success();
     }
 
     @GetMapping("/goods/listAll")

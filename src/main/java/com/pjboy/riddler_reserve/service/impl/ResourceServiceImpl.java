@@ -30,6 +30,11 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    public boolean safeDeleteResourceByTargets(Integer targetType, List<Integer> targetIds) {
+        return resourceMapper.safeDeleteResourceByTargets(targetType, targetIds) > 0;
+    }
+
+    @Override
     public boolean saveResourceByUrl(String url, Integer targetType, Integer targetId) {
         return resourceMapper.saveResourceByUrl(url, targetType, targetId) > 0;
     }

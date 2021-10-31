@@ -27,6 +27,7 @@ public class SaticScheduleTask {
     //3.添加定时任务 (每月10号4点15分钟执行任务)
     @Scheduled(cron = "0 15 4 10 * ?")
     //或直接指定时间间隔，例如：5秒
+//    @Scheduled(cron = "0/5 * * * * ?")
     //@Scheduled(fixedRate=5000)
     private void configureTasks() {
         System.err.println("开始执行清除资源缓存任务........................");

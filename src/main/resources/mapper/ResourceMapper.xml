@@ -13,6 +13,22 @@
             </if>
         </where>
     </update>
+    <update id="safeDeleteResourceByTargets">
+        UPDATE rm_resource rr
+        set rr.target_id = null
+        <where>
+            <if test="targetType!=null">
+                rr.target_type = #{targetType}
+            </if>
+            <if test="targetIds!=null">
+                AND rr.target_id in(
+                <foreach collection="targetIds" item="id" index="index" separator=",">
+                    ${id}
+                </foreach>
+                )
+            </if>
+        </where>
+    </update>
     <update id="saveResourceByUrl">
         UPDATE rm_resource rr
         <if test="targetId != null">

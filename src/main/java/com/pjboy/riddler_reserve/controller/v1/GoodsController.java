@@ -119,7 +119,7 @@ public class GoodsController {
                                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeStart,
                                         @RequestParam(required = false)
                                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date createTimeEnd) {
-        BasicCheck.checkRole("admin");
+//        BasicCheck.checkRole("admin");
         String ErrorEmpty = "未查询到商品!";
         Page<GoodsDO> page = new Page<>(currentPage, pageSize);
         IPage<GoodsVO> goodsDOIPage = goodsService.selectGoodsPage(page, name, createTimeStart, createTimeEnd);

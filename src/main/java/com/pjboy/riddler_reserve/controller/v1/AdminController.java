@@ -37,12 +37,11 @@ public class AdminController {
     return AjaxResponse.error(CustomExceptionType.SYSTEM_ERROR, ErrorMessage);
   }
 
-
   @PostMapping("/admin/login")
   public AjaxResponse adminLogin(@RequestBody AdminDO adminDO) {
     AdminVO adminVO = adminService.checkLogin(adminDO.getUsername(), adminDO.getPassword());
     if (adminVO != null) {
-      StpUtil.setLoginId("admin" + adminVO.getId());
+      StpUtil.login("admin" + adminVO.getId());
       /* 返回 Token */
       Map<String, String> map = new HashMap<>();
       map.put("token", StpUtil.getTokenValue());

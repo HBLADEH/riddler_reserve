@@ -3,6 +3,7 @@ package com.pjboy.riddler_reserve.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pjboy.riddler_reserve.model.OrderGroupDO;
+import com.pjboy.riddler_reserve.model.front.view.OrderGroupPlayerView;
 import com.pjboy.riddler_reserve.model.vo.OrderGroupVO;
 
 import java.util.Date;
@@ -43,4 +44,17 @@ public interface OrderGroupService {
      * @Date: 2021/10/25
      */
     boolean checkGoodsIsFree(OrderGroupDO orderGroupDO);
+
+
+    List<OrderGroupVO> listOrderGroupsByDate(Date startTime,Date endTime);
+
+    /**
+     * 前台的搜索
+     * @param playTime 游玩时间
+     * @param goodsId 商品 ID
+     * @param roomId 房间 ID
+     * @param roundId 场次 ID
+     * @return 组局合集
+     */
+    List<OrderGroupPlayerView> listOrderGroupsByFront(Date playTime,  String goodsName, String roomName, String roundName);
 }

@@ -7,14 +7,20 @@ import com.pjboy.riddler_reserve.exception.RrException;
 
 public class BasicCheck {
 
-  public static void checkLogin() {
-    String errorLogin = "未检测到用户登陆，请先登陆!";
-    if (!StpUtil.isLogin()) throw new RrException(errorLogin);
-  }
+    public static void checkLogin() {
+        String errorLogin = "未检测到用户登陆，请先登陆!";
+        if (!StpUtil.isLogin()) throw new RrException(errorLogin);
+    }
 
-  public static void checkRole(String role) {
-    checkLogin();
-    String errorAuthority = "权限不足!";
-    if (!StpUtil.hasRole(role)) throw new RrException(errorAuthority);
-  }
+    public static void checkRole(String role) {
+        checkLogin();
+        String errorAuthority = "权限不足!";
+        if (!StpUtil.hasRole(role)) throw new RrException(errorAuthority);
+    }
+
+
+    public static Integer getLoginId() {
+        String login = StpUtil.getLoginIdAsString();
+        return Integer.valueOf(login.substring(5));
+    }
 }

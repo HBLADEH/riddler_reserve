@@ -20,6 +20,8 @@ public interface GoodsService {
 
   GoodsFromVO selectGoodsById(Integer goodsId);
 
+  GoodsDO selectGoodsDOById(Integer goodsId);
+
   GoodsDO selectGoodsByName(String name);
 
   /**

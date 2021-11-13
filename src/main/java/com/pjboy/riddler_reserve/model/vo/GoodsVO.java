@@ -16,4 +16,6 @@ public class GoodsVO extends BaseModel implements Serializable {
    * 游玩人数
    */
   private Integer playNum;
+
+  private String coverImg; // 封面
 }

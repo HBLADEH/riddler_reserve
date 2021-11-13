@@ -1,62 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pjboy.riddler_reserve.mapper.OrderGroupMapper">
-  <resultMap id="VOResultMap" type="com.pjboy.riddler_reserve.model.vo.OrderGroupVO">
-    <id column="id" jdbcType="INTEGER" property="id"/>
-    <result column="goods_name" jdbcType="VARCHAR" property="GoodsName"/>
-    <result column="play_num" jdbcType="INTEGER" property="playNum"/>
-    <result column="room_name" jdbcType="VARCHAR" property="roomName"/>
-    <result column="round_name" jdbcType="VARCHAR" property="roundName"/>
-    <result column="package_name" jdbcType="VARCHAR" property="packageName"/>
-    <result column="package_price" jdbcType="DECIMAL" property="packagePrice"/>
-    <result column="play_time" jdbcType="TIMESTAMP" property="playTime"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-  </resultMap>
-  <select id="selectOrderGroupPage" resultMap="VOResultMap">
-    SELECT
-    og.id,
-    g.name 'goods_name',g.play_num,
-    rm.name 'room_name',
-    rd.name 'round_name',
-    og.package_name,og.package_price,og.play_time,og.create_time
-    FROM rm_order_group og,
-    rm_goods g,rm_room rm,rm_round rd
-    <where>
-      og.goods_id = g.id
-      AND
-      og.room_id = rm.id
-      AND
-      og.round_id = rd.id
-      <if test="goodsName != null">
-        AND g.name LIKE CONCAT('%',#{goodsName},'%')
-      </if>
-      <if test="playTimeStart != null">
-        AND og.play_time >= CONCAT('','${playTimeStart}',' 00:00:00')
-      </if>
-      <if test="playTimeEnd != null">
-        AND og.play_time &lt;= CONCAT('','${playTimeEnd}',' 23:59:59')
-      </if>
-    </where>
+    <resultMap id="VOResultMap" type="com.pjboy.riddler_reserve.model.vo.OrderGroupVO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="GoodsName"/>
+        <result column="play_num" jdbcType="INTEGER" property="playNum"/>
+        <result column="room_name" jdbcType="VARCHAR" property="roomName"/>
+        <result column="round_name" jdbcType="VARCHAR" property="roundName"/>
+        <result column="package_name" jdbcType="VARCHAR" property="packageName"/>
+        <result column="package_price" jdbcType="DECIMAL" property="packagePrice"/>
+        <result column="play_time" jdbcType="TIMESTAMP" property="playTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <select id="selectOrderGroupPage" resultMap="VOResultMap">
+        SELECT
+        og.id,
+        g.name 'goods_name',g.play_num,
+        rm.name 'room_name',
+        rd.name 'round_name',
+        og.package_name,og.package_price,og.play_time,og.create_time
+        FROM rm_order_group og,
+        rm_goods g,rm_room rm,rm_round rd
+        <where>
+            og.goods_id = g.id
+            AND
+            og.room_id = rm.id
+            AND
+            og.round_id = rd.id
+            <if test="goodsName != null">
+                AND g.name LIKE CONCAT('%',#{goodsName},'%')
+            </if>
+            <if test="playTimeStart != null">
+                AND og.play_time >= CONCAT('','${playTimeStart}',' 00:00:00')
+            </if>
+            <if test="playTimeEnd != null">
+                AND og.play_time &lt;= CONCAT('','${playTimeEnd}',' 23:59:59')
+            </if>
+        </where>
 
-  </select>
-  <select id="findOrderGroupById" resultMap="VOResultMap">
-    SELECT
-    og.id,
-    g.name 'goods_name',g.play_num,
-    rm.name 'room_name',
-    rd.name 'round_name',
-    og.package_name,og.package_price,og.play_time,og.create_time
-    FROM rm_order_group og,
-    rm_goods g,rm_room rm,rm_round rd
-    <where>
-      og.goods_id = g.id
-      AND
-      og.room_id = rm.id
-      AND
-      og.round_id = rd.id
-      <if test="id != null">
-        AND og.id = #{id}
-      </if>
-    </where>
-  </select>
+    </select>
+    <select id="findOrderGroupById" resultMap="VOResultMap">
+        SELECT
+        og.id,
+        g.name 'goods_name',g.play_num,
+        rm.name 'room_name',
+        rd.name 'round_name',
+        og.package_name,og.package_price,og.play_time,og.create_time
+        FROM rm_order_group og,
+        rm_goods g,rm_room rm,rm_round rd
+        <where>
+            og.goods_id = g.id
+            AND
+            og.room_id = rm.id
+            AND
+            og.round_id = rd.id
+            <if test="id != null">
+                AND og.id = #{id}
+            </if>
+        </where>
+    </select>
+    <select id="listOrderGroupsByDate" resultType="com.pjboy.riddler_reserve.model.vo.OrderGroupVO">
+        SELECT
+        og.id,
+        g.name 'goods_name',g.play_num,
+        rm.name 'room_name',
+        rd.name 'round_name',
+        og.package_name,og.package_price,og.play_time,og.create_time
+        FROM rm_order_group og,
+        rm_goods g,rm_room rm,rm_round rd
+        <where>
+            og.goods_id = g.id
+            AND
+            og.room_id = rm.id
+            AND
+            og.round_id = rd.id
+            <if test="startTime!=null">
+                and date_format(play_time,'%Y-%m-%d') &gt;= date_format(#{startTime},'%Y-%m-%d')
+            </if>
+            <if test="endTime!=null">
+                and date_format(play_time,'%Y-%m-%d') &lt;= date_format(#{endTime},'%Y-%m-%d')
+            </if>
+        </where>
+    </select>
+
+    <select id="listOrderGroupsByFront" resultType="com.pjboy.riddler_reserve.model.front.view.OrderGroupPlayerView">
+        SELECT
+        ogp.id,
+        ogp.goods_name,
+        ogp.play_num,
+        ogp.players,
+        ogp.room_name,
+        ogp.round_name,
+        ogp.package_name,
+        ogp.package_price,
+        ogp.play_time,
+        ogp.create_time
+        FROM
+        rm_order_group_player ogp
+        <where>
+            <if test="playTime!=null">
+                date_format(ogp.play_time,'%Y-%m-%d') = date_format(#{playTime},'%Y-%m-%d')
+            </if>
+            <if test="goodsName!=null">
+                AND ogp.goods_name = #{goodsName}
+            </if>
+            <if test="roomName!=null">
+                AND ogp.room_name = #{roomName}
+            </if>
+            <if test="roundName!=null">
+                AND ogp.round_name = #{roundName}
+            </if>
+        </where>
+    </select>
 </mapper>

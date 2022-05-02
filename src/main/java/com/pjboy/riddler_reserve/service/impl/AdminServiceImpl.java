@@ -22,50 +22,72 @@ import java.util.Map;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-  @Autowired
-  private AdminMapper adminMapper;
+    @Autowired
+    private AdminMapper adminMapper;
 
-  @Autowired
-  private PermissionsMapper permissionsMapper;
+    @Autowired
+    private PermissionsMapper permissionsMapper;
 
-  @Autowired
-  private BCryptPasswordEncoder encoder;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
-  /**
-   * @Description: 登陆检查, 如果登陆成功则返回登陆用户的ID
-   * @Param: [username, password]
-   * @return: boolean
-   * @Author: BLADE
-   * @Date: 2021/4/6
-   */
-  @Override
-  public AdminVO checkLogin(String username, String password) {
-    QueryWrapper<AdminDO> wrapper = new QueryWrapper<>();
-    wrapper.eq("username", username);
-    AdminDO adminDO = adminMapper.selectOne(wrapper);
-    if (adminDO != null && encoder.matches(password, adminDO.getPassword())) {
-      DozerBeanMapper mapper = new DozerBeanMapper();
-      return mapper.map(adminDO, AdminVO.class);
+    /**
+     * @Description: 登陆检查, 如果登陆成功则返回登陆用户的ID
+     * @Param: [username, password]
+     * @return: boolean
+     * @Author: BLADE
+     * @Date: 2021/4/6
+     */
+    @Override
+    public AdminVO checkLogin(String username, String password) {
+        QueryWrapper<AdminDO> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", username);
+        AdminDO adminDO = adminMapper.selectOne(wrapper);
+        if (adminDO != null && encoder.matches(password, adminDO.getPassword())) {
+            DozerBeanMapper mapper = new DozerBeanMapper();
+            return mapper.map(adminDO, AdminVO.class);
+        }
+        return null;
     }
-    return null;
-  }
 
-  @Override
-  public AdminDO getById(Long id) {
-    return adminMapper.selectById(id);
-  }
-
-  @Override
-  public AdminInfoVO getInfoById(Integer id) {
-    AdminDO adminDO = adminMapper.selectById(id);
-    if (adminDO != null) {
-      AdminInfoVO adminInfoVO = new AdminInfoVO(adminDO);
-      List<PermissionsVO> permissions = permissionsMapper.getPermissionsByAdminId(id);
-      if (permissions != null) {
-        adminInfoVO.setPermissions(permissions);
-        return adminInfoVO;
-      }
+    @Override
+    public AdminDO getById(Long id) {
+        return adminMapper.selectById(id);
     }
-    return null;
-  }
+
+    @Override
+    public AdminInfoVO getInfoById(Integer id) {
+        AdminDO adminDO = adminMapper.selectById(id);
+        if (adminDO != null) {
+            AdminInfoVO adminInfoVO = new AdminInfoVO(adminDO);
+            List<PermissionsVO> permissions = permissionsMapper.getPermissionsByAdminId(id);
+            if (permissions != null) {
+                adminInfoVO.setPermissions(permissions);
+                return adminInfoVO;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean changeInfo(AdminVO adminVO) {
+        AdminDO adminDO = new AdminDO(adminVO);
+        return adminMapper.updateById(adminDO) > 0;
+    }
+
+    @Override
+    public boolean checkPassword(Integer loginId, String oldPassword) {
+        QueryWrapper<AdminDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", loginId);
+        AdminDO adminDO = adminMapper.selectOne(queryWrapper);
+        return adminDO != null && encoder.matches(oldPassword, adminDO.getPassword());
+    }
+
+    @Override
+    public boolean updatePassword(Integer loginId, String newPassword) {
+        AdminDO adminDO = new AdminDO();
+        adminDO.setId(loginId);
+        adminDO.setPassword(encoder.encode(newPassword));
+        return adminMapper.updateById(adminDO) > 0;
+    }
 }

@@ -85,8 +85,12 @@
 
     <select id="listOrderGroupsByFront" resultType="com.pjboy.riddler_reserve.model.front.view.OrderGroupPlayerView">
         SELECT
+<!--        <if test="userId != null">-->
+<!--            ifnull(user_pay.is_pay, 0)-->
+<!--        </if>-->
         ogp.id,
         ogp.goods_name,
+        ogp.cover_img,
         ogp.play_num,
         ogp.players,
         ogp.room_name,
@@ -97,17 +101,28 @@
         ogp.create_time
         FROM
         rm_order_group_player ogp
+<!--        <if test="userId != null">-->
+<!--            LEFT JOIN-->
+<!--            (select-->
+<!--            ro.order_group,-->
+<!--            1 'is_pay'-->
+<!--            from rm_order ro-->
+<!--            where ro.user_id = #{userId})-->
+<!--            user_pay on-->
+<!--            user_pay.order_group = ogp.id-->
+<!--        </if>-->
+
         <where>
             <if test="playTime!=null">
                 date_format(ogp.play_time,'%Y-%m-%d') = date_format(#{playTime},'%Y-%m-%d')
             </if>
-            <if test="goodsName!=null">
+            <if test="goodsName!=null and goodsName != ''">
                 AND ogp.goods_name = #{goodsName}
             </if>
-            <if test="roomName!=null">
+            <if test="roomName!=null and roomName != ''">
                 AND ogp.room_name = #{roomName}
             </if>
-            <if test="roundName!=null">
+            <if test="roundName!=null and roundName != ''">
                 AND ogp.round_name = #{roundName}
             </if>
         </where>

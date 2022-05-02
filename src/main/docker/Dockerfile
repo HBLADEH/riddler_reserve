@@ -3,7 +3,7 @@ FROM openjdk:11.0.4
 MAINTAINER BLADE 1012582116@qq.com
 COPY riddler_reserve-0.0.1.jar /tmp/app.jar
 WORKDIR /tmp
-#VOLUME /usr/local/song
+#VOLUME /usr/share/nginx/html/static
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
 ## 基础镜像

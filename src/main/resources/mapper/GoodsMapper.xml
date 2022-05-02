@@ -1,33 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pjboy.riddler_reserve.mapper.GoodsMapper">
-  <resultMap id="BaseResultMap" type="com.pjboy.riddler_reserve.model.GoodsDO">
-    <id column="id" jdbcType="INTEGER" property="id"/>
-    <result column="name" jdbcType="VARCHAR" property="name"/>
-    <result column="description" jdbcType="VARCHAR" property="description"/>
-    <result column="package_list" jdbcType="LONGVARCHAR" property="packageList"/>
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.pjboy.riddler_reserve.model.GoodsDO">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="package_list" jdbcType="LONGVARCHAR" property="packageList"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
 
-  <select id="selectGoodsPage" resultType="com.pjboy.riddler_reserve.model.vo.GoodsVO">
-    SELECT
-    id, name,play_num,cover_img, create_time, update_time
-    FROM rm_goods
-    <where>
-      <if test="goodsName != null">
-        name LIKE CONCAT('%',#{goodsName},'%')
-      </if>
-      <if test="createTimeStart != null">
-        AND create_time >= CONCAT('','${createTimeStart}',' 00:00:00')
-      </if>
-      <if test="createTimeEnd != null">
-        AND create_time &lt;= CONCAT('','${createTimeEnd}',' 23:59:59')
-      </if>
-    </where>
-  </select>
-  <select id="getAllDWGoods" resultType="com.pjboy.riddler_reserve.model.util.DropDown">
-    SELECT id 'value',name 'label'
-    FROM rm_goods
-  </select>
+    <select id="selectGoodsPage" resultType="com.pjboy.riddler_reserve.model.vo.GoodsVO">
+        SELECT
+        id, name,play_num,cover_img, create_time, update_time
+        FROM rm_goods
+        <where>
+            <if test="goodsName != null">
+                name LIKE CONCAT('%',#{goodsName},'%')
+            </if>
+            <if test="createTimeStart != null">
+                AND create_time >= CONCAT('','${createTimeStart}',' 00:00:00')
+            </if>
+            <if test="createTimeEnd != null">
+                AND create_time &lt;= CONCAT('','${createTimeEnd}',' 23:59:59')
+            </if>
+        </where>
+        ORDER BY rm_goods.create_time desc
+    </select>
+    <select id="getAllDWGoods" resultType="com.pjboy.riddler_reserve.model.util.DropDown">
+        SELECT id 'value',name 'label'
+        FROM rm_goods
+    </select>
+    <select id="getGoodsDW" resultType="com.pjboy.riddler_reserve.model.util.DropDown">
+        SELECT id 'value',name 'label'
+        FROM rm_goods
+        <where>
+            <if test="goodsName != null">
+                name LIKE CONCAT('%',#{goodsName},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

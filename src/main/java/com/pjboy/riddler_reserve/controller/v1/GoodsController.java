@@ -100,7 +100,7 @@ public class GoodsController {
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorUpdate);
     }
 
-    private AjaxResponse saveResources(@RequestBody GoodsFromVO goodsFromVO) {
+    private AjaxResponse saveResources(GoodsFromVO goodsFromVO) {
         if (goodsFromVO.getGoods().getCoverImg() != null) {
             String coverImg = goodsFromVO.getGoods().getCoverImg();
             coverImg = coverImg.substring(coverImg.lastIndexOf("/") + 1);
@@ -161,6 +161,5 @@ public class GoodsController {
         }
         return AjaxResponse.error(CustomExceptionType.REQUEST_REFUSE, "上传文件失败");
     }
-
 }
 

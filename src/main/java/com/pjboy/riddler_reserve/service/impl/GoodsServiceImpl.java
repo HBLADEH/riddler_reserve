@@ -118,4 +118,9 @@ public class GoodsServiceImpl implements GoodsService {
     public List<DropDown> getAllDWGoods() {
         return goodsMapper.getAllDWGoods();
     }
+
+    @Override
+    public List<DropDown> getGoodsDW(String goodsName) {
+        return goodsMapper.getGoodsDW(goodsName);
+    }
 }

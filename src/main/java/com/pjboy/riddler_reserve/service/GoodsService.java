@@ -39,4 +39,6 @@ public interface GoodsService {
 
   List<DropDown> getAllDWGoods();
 
+  List<DropDown> getGoodsDW(String goodsName);
+
 }

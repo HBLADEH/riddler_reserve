@@ -5,6 +5,7 @@ import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.UserDO;
+import com.pjboy.riddler_reserve.model.vo.UserVO;
 import com.pjboy.riddler_reserve.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/v1/front")
-public class UserController {
+public class UserFrontController {
 
     @Autowired
     private UserService userService;
@@ -41,6 +42,8 @@ public class UserController {
             /* 返回 Token */
             Map<String, String> map = new HashMap<>();
             map.put("token", StpUtil.getTokenValue());
+            map.put("username", userDO.getUsername());
+            map.put("nickname", userDO.getNickname());
             return AjaxResponse.success(map, "登陆成功!");
         }
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, "登陆失败,请检查用户名或者密码!");
@@ -64,4 +67,26 @@ public class UserController {
         return AjaxResponse.error(CustomExceptionType.SYSTEM_ERROR, PasswordErr);
     }
 
+    @PostMapping("/register")
+    public AjaxResponse register(@RequestBody UserDO userDO) {
+        String UsernameErr = "用户名已存在!";
+        String NicknameErr = "昵称已存在!";
+        String Err = "出现异常！";
+        if (!userService.checkUsername(userDO.getUsername()))
+            return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, UsernameErr);
+        if (!userService.checkNickname(userDO.getNickname()))
+            return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, NicknameErr);
+        if (userService.doRegister(userDO))
+            return AjaxResponse.success();
+        return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, Err);
+    }
+
+
+    @GetMapping("/userInfo")
+    public AjaxResponse getUserInfo() {
+        BasicCheck.checkRole("users");
+        UserVO userVO = userService.getUserInfo(BasicCheck.getLoginId());
+        if (userVO != null) return AjaxResponse.success(userVO);
+        return AjaxResponse.error(CustomExceptionType.SYSTEM_ERROR, "获取用户信息失败!");
+    }
 }

@@ -30,6 +30,8 @@ public class UploadTools {
      * @return 是否上传成功
      */
     public boolean uploadImg(String uploadFolder, MultipartFile file, String newFileName) {
+//        System.out.println("uploadFolder " + uploadFolder);
+//        System.out.println("newFileName " + newFileName);
         String fileName = file.getOriginalFilename();
         if (StringUtils.isBlank(fileName))
             throw new RrException(CustomExceptionType.FILE_IS_NULL, "检测到上传的文件为空，请求失败！");
@@ -39,6 +41,7 @@ public class UploadTools {
         try {
             file.transferTo(new File(uploadFolder, newFileName));
         } catch (IOException e) {
+            e.printStackTrace();
             throw new RrException(CustomExceptionType.REQUEST_REFUSE, "上传文件失败！");
         }
         return true;

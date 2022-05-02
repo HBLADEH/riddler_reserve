@@ -1,5 +1,6 @@
 package com.pjboy.riddler_reserve.controller.v1;
 
+import com.pjboy.riddler_reserve.config.PageView;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.vo.InitVO;
@@ -23,6 +24,7 @@ public class FrontController {
   * @Author: BLADE
   * @Date: 2021/5/20
   */
+  @PageView
   @GetMapping("/init")
   public AjaxResponse getInit() {
     InitVO initVO = frontService.getInitData();

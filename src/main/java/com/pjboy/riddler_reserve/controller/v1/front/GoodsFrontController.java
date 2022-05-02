@@ -2,6 +2,7 @@ package com.pjboy.riddler_reserve.controller.v1.front;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.GoodsDO;
@@ -36,5 +37,10 @@ public class GoodsFrontController {
         GoodsFromVO goodsFromVO = goodsService.selectGoodsById(goodsId);
         if (goodsFromVO != null) return AjaxResponse.success(goodsFromVO);
         return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorSelect);
+    }
+
+    @GetMapping("/goodsDW")
+    public AjaxResponse getGoodsDW(@RequestParam(required = false) String goodsName) {
+        return AjaxResponse.success(goodsService.getGoodsDW(goodsName));
     }
 }

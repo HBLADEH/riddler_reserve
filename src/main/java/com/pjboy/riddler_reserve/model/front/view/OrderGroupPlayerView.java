@@ -12,6 +12,8 @@ import java.util.Date;
 public class OrderGroupPlayerView {
     private Integer id;
     private String GoodsName;
+    private Integer isPay;
+    private String coverImg;
     private Integer playNum;
     private Integer players;
     private String roomName;

@@ -23,7 +23,7 @@ public interface RoundService {
    * @Author: BLADE
    * @Date: 2021/10/21
    */
-  boolean checkRoundName(String roundName);
+  boolean checkRoundName(Integer editId,String roundName);
 
   RoundDO selectRoundById(Integer roundId);
 

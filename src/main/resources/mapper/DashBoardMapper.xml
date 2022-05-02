@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pjboy.riddler_reserve.mapper.DashBoardMapper">
+    <select id="getDashBoardData" resultType="com.pjboy.riddler_reserve.model.vo.DashBoardVO">
+        SELECT v_today.views,
+               v_yesterday.views                                 AS views_yesterday,
+               v_today.views - v_yesterday.views                 AS views_compare_yesterday,
+               g.goods_sum,
+               IFNULL(o.order_price_sum, 0)                      AS order_price_sum,
+               IFNULL(o_yesterday.order_price_sum, 0)            AS order_price_sum_yesterday,
+               IFNULL(o.order_price_sum, 0) -
+               IFNULL(o_yesterday.order_price_sum, 0)            AS order_price_sum_compare_yesterday,
+               og.order_group_sum,
+               og_yesterday.order_group_sum                      AS order_group_sum_yesterday,
+               og.order_group_sum - og_yesterday.order_group_sum AS order_group_sum_compare_yesterday,
+               u.user_sum
+        FROM (
+                 SELECT d.date              AS view_date,
+                        IFNULL(rv.views, 0) AS views
+                 FROM (SELECT curdate() AS date) d
+                          LEFT JOIN rm_views rv ON rv.view_date = d.date
+             ) AS v_today,
+             (
+                 SELECT d.date              AS view_date,
+                        IFNULL(rv.views, 0) AS views
+                 FROM (SELECT DATE(date_sub(curdate(), INTERVAL 1 DAY)) AS date) d
+                          LEFT JOIN rm_views rv ON rv.view_date = d.date
+             ) AS v_yesterday,
+             (SELECT count(1) AS goods_sum FROM rm_goods rg) AS g,
+             (
+                 SELECT sum(ro.order_price) AS order_price_sum
+                 FROM rm_order ro
+                 WHERE DATE_FORMAT(ro.create_time, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')) AS o,
+             (
+                 SELECT sum(ro.order_price) AS order_price_sum
+                 FROM rm_order ro
+                 WHERE date_format(ro.create_time, '%Y %m') =
+                       date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y %m')
+             ) AS o_yesterday,
+             (SELECT count(1) AS order_group_sum
+              FROM rm_order_group rog
+              WHERE DATE_FORMAT(rog.create_time, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m')) AS og,
+             (
+                 SELECT count(1) AS order_group_sum
+                 FROM rm_order_group rog
+                 WHERE date_format(rog.create_time, '%Y %m') =
+                       date_format(DATE_SUB(curdate(), INTERVAL 1 MONTH), '%Y %m')) AS og_yesterday,
+             (SELECT count(1) AS user_sum FROM rm_user AS ru) AS u
+    </select>
+
+    <select id="getAfterViews" resultType="com.pjboy.riddler_reserve.model.vo.AfterViewsVO">
+        (SELECT d.date              AS view_date,
+                IFNULL(rv.views, 0) AS views
+         FROM (SELECT DATE(date_sub(curdate(), INTERVAL 1 DAY)) AS date) d
+                  LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        UNION
+        (
+            SELECT d.date              AS view_date,
+                   IFNULL(rv.views, 0) AS views
+            FROM (SELECT DATE(date_sub(curdate(), INTERVAL 2 DAY)) AS date) d
+                     LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        UNION
+        (
+            SELECT d.date              AS view_date,
+                   IFNULL(rv.views, 0) AS views
+            FROM (SELECT DATE(date_sub(curdate(), INTERVAL 3 DAY)) AS date) d
+                     LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        UNION
+        (
+            SELECT d.date              AS view_date,
+                   IFNULL(rv.views, 0) AS views
+            FROM (SELECT DATE(date_sub(curdate(), INTERVAL 4 DAY)) AS date) d
+                     LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        UNION
+        (
+            SELECT d.date              AS view_date,
+                   IFNULL(rv.views, 0) AS views
+            FROM (SELECT DATE(date_sub(curdate(), INTERVAL 5 DAY)) AS date) d
+                     LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        UNION
+        (
+            SELECT d.date              AS view_date,
+                   IFNULL(rv.views, 0) AS views
+            FROM (SELECT DATE(date_sub(curdate(), INTERVAL 6 DAY)) AS date) d
+                     LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        UNION
+        (
+            SELECT d.date              AS view_date,
+                   IFNULL(rv.views, 0) AS views
+            FROM (SELECT DATE(date_sub(curdate(), INTERVAL 7 DAY)) AS date) d
+                     LEFT JOIN rm_views rv ON rv.view_date = d.date
+        )
+        ORDER BY view_date ASC
+    </select>
+</mapper>

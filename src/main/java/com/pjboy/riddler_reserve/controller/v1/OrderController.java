@@ -1,5 +1,8 @@
 package com.pjboy.riddler_reserve.controller.v1;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.pjboy.riddler_reserve.controller.util.BasicCheck;
 import com.pjboy.riddler_reserve.exception.AjaxResponse;
 import com.pjboy.riddler_reserve.exception.CustomExceptionType;
 import com.pjboy.riddler_reserve.model.vo.OrderVO;
@@ -16,22 +19,42 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/orders")
 public class OrderController {
 
-  @Autowired
-  private OrderService orderService;
+    @Autowired
+    private OrderService orderService;
 
-  @GetMapping("/orders/main")
-  public AjaxResponse listMainOrders(@RequestParam
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
-                                     @RequestParam
-                                     @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
-    List<OrderVO> mainOrders = orderService.listOrdersByDate(startTime, endTime);
-    if (mainOrders != null) {
-      return AjaxResponse.success(mainOrders);
+    @GetMapping("/main")
+    public AjaxResponse listMainOrders(@RequestParam
+                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+                                       @RequestParam
+                                       @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime) {
+        List<OrderVO> mainOrders = orderService.listOrdersByDate(startTime, endTime);
+        if (mainOrders != null) {
+            return AjaxResponse.success(mainOrders);
+        }
+        return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, "查询预约失败!");
     }
-    return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, "查询预约失败!");
-  }
+
+
+    @GetMapping("/listAll")
+    public AjaxResponse orderListAll(
+            @RequestParam(value = "size") Integer pageSize,
+            @RequestParam(value = "page") Integer currentPage,
+            @RequestParam(required = false)
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,
+            @RequestParam(required = false)
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,
+            @RequestParam(required = false)
+                    String userName
+    ) {
+        BasicCheck.checkRole("admin");
+        Page<OrderVO> page = new Page<>(currentPage, pageSize);
+        IPage<OrderVO> orderVOIPage = orderService.getOrderListAll(page, startTime, endTime, userName);
+        if (orderVOIPage != null) return AjaxResponse.success(orderVOIPage);
+        return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, "查询预约失败!");
+    }
+
 
 }

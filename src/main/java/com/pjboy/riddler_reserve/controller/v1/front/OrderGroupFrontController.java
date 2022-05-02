@@ -31,10 +31,11 @@ public class OrderGroupFrontController {
             @RequestParam(required = false) String roomName,
             @RequestParam(required = false) String roundName
     ) {
-        BasicCheck.checkRole("users");
-        String ErrorEmpty = "未查询到组局信息!";
+//        BasicCheck.checkRole("users");
+//        String ErrorEmpty = "未查询到组局信息!";
         List<OrderGroupPlayerView> orderGroupPlayerViews = orderGroupService.listOrderGroupsByFront(playTime, goodsName, roomName, roundName);
         if (orderGroupPlayerViews != null) return AjaxResponse.success(orderGroupPlayerViews);
-        return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
+        return AjaxResponse.success();
+//        return AjaxResponse.error(CustomExceptionType.USER_INPUT_ERROR, ErrorEmpty);
     }
 }

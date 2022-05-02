@@ -35,4 +35,5 @@ public interface GoodsMapper extends BaseMapper<GoodsDO> {
   * @Date: 2021/10/20
   */
   List<DropDown> getAllDWGoods();
+  List<DropDown> getGoodsDW(@Param("goodsName") String goodsName);
 }

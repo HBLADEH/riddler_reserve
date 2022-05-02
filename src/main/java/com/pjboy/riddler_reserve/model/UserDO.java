@@ -9,28 +9,28 @@ import java.io.Serializable;
 @TableName("rm_user")
 public class UserDO extends BaseModel implements Serializable {
 
-  /**
-   * 用户名，唯一
-   */
-  private String username;
+    /**
+     * 用户名，唯一
+     */
+    private String username;
 
-  /**
-   * 用户昵称
-   */
-  private String nickname;
+    /**
+     * 用户昵称
+     */
+    private String nickname;
 
-  /**
-   * 用户密码
-   */
-  private String password;
+    /**
+     * 用户密码
+     */
+    private String password;
 
-  /**
-   * 头像url
-   */
-  private String avatar;
+    /**
+     * 头像url
+     */
+    private String avatar;
 
-  /**
-   * 邮箱
-   */
-  private String email;
+    /**
+     * 邮箱
+     */
+    private String email;
 }
